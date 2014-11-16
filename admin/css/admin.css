@@ -120,6 +120,28 @@ body{
     height : 100%;
     float : left;
 }
+
+#container #contents .reservation{
+    margin: 0px auto;
+    text-align: center;
+}
+
+#container #contents .reservation .reservation_table{
+    margin : 0px auto;
+    width : 100%;
+    border : 1px solid #565A61;
+    border-collapse: collapse;
+}
+
+.tab_menu{
+    display : none;
+}
+
+.reservation_table .header{
+    border-bottom: 1px solid #565A61;
+    color : #58BD2F;
+}
+
 /*container에 관련된 CSS -끝-*/
 
 /*footer에 관련된 CSS*/
