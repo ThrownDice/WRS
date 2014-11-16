@@ -2,4 +2,4 @@ WRS
 ===
 WRS System Repository
 
-Other Contetns will be added.
+Other contents will be added.
