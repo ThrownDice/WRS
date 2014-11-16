@@ -1,0 +1,137 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
+
+/*메인컬러*/
+/*
+연한 블랙 : #565A61
+노멀 블랙 : #26282B
+진한 블랙 : #141517
+노멀 그린 : #58BD2F
+진한 그린 : #3A7D1F
+노멀 청색 : #2970BD
+진한 청색 : #1B4A7D
+*/
+
+body{
+    width : 100%;
+    height : 100%;
+    background-color: #26282B;
+    font-family: 'Nanum Gothic', serif;
+    color : white;
+    overflow : hidden;
+}
+
+/* 레이아웃 설정을 위한 가이드 라인 */
+/*div{
+    border : 1px solid white;
+}*/
+
+#wrap{
+    width : 1280px;
+    height : 720px;
+    margin : 0px auto;
+    padding-top : 40px;
+}
+
+
+/*header에 관련된 CSS*/
+#header{
+    height : 100px;
+}
+
+#header .logo{
+    float : left;
+    width : 220px;
+    height : 100%;
+    text-align: center;
+}
+
+#header .status{
+    float : left;
+    width : 800px;
+    height : 100%;
+}
+
+#header .status .time{
+    text-align: center;
+    width : 300px;
+    margin : 0px auto;
+}
+
+#header .status .waiting{
+    text-align: center;
+    width : 300px;
+    margin : 0px auto;
+}
+
+#header .status .waiting .num{
+    font-size : 40pt;
+    color : #3A7D1F;
+}
+
+#header .user{
+    float : right;
+    width : 220px;
+    height : 100%;
+}
+
+#header .user .msg{
+    text-align: center;
+}
+
+#header .user .menu .btn_logout{
+    text-align: center;
+}
+
+#header .user .menu .btn_logout:hover{
+    color : #58BD2F;
+}
+
+/*header에 관련된 CSS -끝- */
+
+/*container에 관련된 CSS*/
+#container{
+    width : 100%;
+    height : 500px;
+}
+
+#container .snb{
+    width : 220px;
+    height : 100%;
+    float : left;
+}
+
+#container .snb .menu{
+    font-size : 15pt;
+    text-align: center;
+    width : 100%;
+    height : 80px;
+    line-height: 80px;
+    border-bottom: 1px solid #565A61;
+}
+
+#container .snb .menu:hover{
+    background-color: #141517;
+    color : #58BD2F;
+}
+
+#container #contents{
+    width : 1000px;
+    height : 100%;
+    float : left;
+}
+/*container에 관련된 CSS -끝-*/
+
+/*footer에 관련된 CSS*/
+#footer{
+    width : 100%;
+    height : 100px;
+}
+
+#footer .copyright{
+    font-size : 10pt;
+    text-align: center;
+    color : #565A61;
+}
+
+/*footer에 관련된 CSS -끝-*/
