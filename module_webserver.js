@@ -2,39 +2,62 @@
  * WebServer Module
  * This is a WebServer Module.
  */
-var vertx = require('vertx');
-var console = require('vertx/console');
-var http = require('vertx/http');
-var sockjs = require('vertx/sockjs');
+var http = require('http');
+var path = require('path');
+var fs = require('fs');
 
-
-//Http server
-var http_server = http.createHttpServer();
-
-http_server.requestHandler(function(req){
-
-    var file = '';
-
-    console.log("request arrived. " + req.path());
-
-    if(req.path() == '/'){
-        file = 'index.html';
-    }else if(req.path().indexOf('..') == -1){
-        file = req.path();
+//cache object
+var cache = {};
+function cacheAndDeliver(f, cb){
+    if(!cache[f]){
+        fs.readFile(f, function(err, data){
+           if(!err){
+               cache[f] = {content : data};
+           }
+            cb(err,data);
+        });
+        return;
     }
+    console.log('loading ' + f + ' from cache');
+    cb(null, cache[f].content);
+}
 
-    console.log("response : " + file);
-    req.response.sendFile('web/' + file);
+//mime type object
+var mimeTypes = {
+    '.js' : 'text/javascript',
+    '.html' : 'text/html',
+    '.css' : 'text/css'
+};
 
-});
+http.createServer(function(request, response){
 
-//SockJS Server
-var sock_js_server = sockjs.createSockJSServer(http_server);
-var sock_js_config = {};
-sock_js_config.prefix = "/event_bus";
+    console.log(request.url);
 
-sock_js_server.installApp(sock_js_config, function(sock){
-    new vertx.Pump(sock,sock).start();
-});
+    //var lookup = path.basename(decodeURI(request.url)) || 'index.html';
+    var url = decodeURI(request.url);
+    var lookup = url === '/' ? 'index.html' : url;
 
-http_server.listen(8080, "localhost");
+    console.log(lookup);
+
+    var f = 'web/' + lookup;
+    fs.exists(f, function(exists){
+        if(exists){
+            cacheAndDeliver(f, function(err, data){
+                if(err){
+                    response.writeHead(500);
+                    response.end('Server Error!');
+                    return ;
+                }
+                var headers = {
+                    'Content-type' : mimeTypes[path.extname(f)]
+                };
+                response.writeHead(200, headers);
+                response.end(data);
+            });
+            return;
+        }
+        response.writeHead(404);
+        response.end('Page Not Found!');
+    })
+
+}).listen(8080);
