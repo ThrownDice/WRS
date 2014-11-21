@@ -8,10 +8,12 @@
     </title>
 
     <link rel="stylesheet" href="../../common/css/normalize.css">
-    <link rel="stylesheet" href="../css/reserve.css"/>
+    <link rel="stylesheet" href="../../common/css/jquery.mobile-1.4.5.min.css"/>
 
-    <script src="../../common/js/sockjs-0.3.4.min.js"></script>
-    <script src="../../common/js/vertxbus-2.1.js"></script>
+    <script src="../../common/js/jquery-2.1.1.min.js"></script>
+    <script src="../../common/js/jquery.mobile-1.4.5.min.js"></script>
+
+    <link rel="stylesheet" href="../css/reserve.css"/>
     <script src="../js/reserve.js"> </script>
 
 </head>
@@ -20,7 +22,7 @@
     <div id="wrap">
 
         <div id="header">
-
+            <a href="#" class="ui-btn ui-icon-bars ui-btn-icon-left"> </a>
         </div>
 
         <div id="container">
@@ -48,7 +50,7 @@
                     <div class="form_name">
                         <div class="tag"> 이름 </div>
                         <div class="contents">
-                            <input type="text"/>
+                            <input type="text" class="input_name"/>
                         </div>
 
                     </div>
@@ -56,7 +58,7 @@
                     <div class="form_phone">
                         <div class="tag"> 전화번호 </div>
                         <div class="contents">
-                            <input type="text"/>
+                            <input type="text" class="input_phone"/>
                         </div>
                     </div>
 
@@ -69,6 +71,24 @@
                 <div class="btn_reserve btn"> 예약하기 </div>
 
             </div>
+
+            <div class="lobby">
+
+                <div class="status">
+                    <div class="time">
+                        2014 11 16 22:14
+                    </div>
+                    <div class="waiting_count">
+                        현재 대기 번호 : <span class="count"> 15 </span>
+                    </div>
+                    <div class="my_count">
+                        나의 대기 번호 : <span class="count"> 16 </span>
+                    </div>
+                </div>
+
+            </div>
+
+
 
         </div>
 
