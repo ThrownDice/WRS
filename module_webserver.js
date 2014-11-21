@@ -70,6 +70,11 @@ http.createServer(function(request, response){
                         var postDataObject = querystring.parse(postData);
                         var result = {};
 
+                        dbModule.collection_reservation.create({
+                            name : postDataObject.name,
+                            phone : postDataObject.phone
+                        });
+
                         result.status = 'ok';
                         console.log('User Posted : ' + util.inspect(postDataObject));
                         response.end(JSON.stringify(result));
