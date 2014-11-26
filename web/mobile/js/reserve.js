@@ -39,8 +39,7 @@
                 console.log(result.status);
 
                 $('.reserve').animate({
-                    left : '-100%',
-                    width : '0%'
+                    left : '-100%'
                 }, 500);
                 $('.lobby').animate({
                     left : '0%'
