@@ -11,8 +11,6 @@ var util = require('util');
 //Load DAO
 var dbModule = require('./module_db');
 
-dbModule.collection_reservation.create();
-
 //max data size
 var maxData = 5 * 1024 * 1024; //5MB
 
