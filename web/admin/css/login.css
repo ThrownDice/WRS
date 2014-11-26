@@ -4,7 +4,7 @@
 body{
 	margin-left:auto;
 	margin-right:auto;
-	width:70%;
+	width:60%;
 	height:100%;
 	background-color:#26282B;
 	font-family:'Nanum Gothic', serif;
@@ -12,9 +12,10 @@ body{
 	overflow:hidden;
 }
 
-#logo{
+#logo-fluid{
+	margin-bottom:auto;
 }
 
-#form #submit{
-	color:white;
+.wrap{
 }
+
