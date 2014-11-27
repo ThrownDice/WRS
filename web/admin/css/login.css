@@ -13,9 +13,15 @@ body{
 }
 
 #logo-fluid{
-	margin-bottom:auto;
+	display:flex;
+	justify-content:center;
 }
 
-.wrap{
+#linktoreservep a{
+	text-align:center;
+	text-decoration:none;
 }
 
+#copyright{
+	text-align:center;
+}
