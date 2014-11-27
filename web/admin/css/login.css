@@ -12,16 +12,25 @@ body{
 	overflow:hidden;
 }
 
-#logo-fluid{
+.logo-fluid{
 	display:flex;
 	justify-content:center;
 }
 
-#linktoreservep a{
-	text-align:center;
-	text-decoration:none;
+.btn_signin{
+	color:#565A61;
 }
 
-#copyright{
-	text-align:center;
+.linktoreservep{
+	display:flex;
+	justify-content:flex-end;
+}
+
+.linktoreservep a{
+	color:gray;
+}
+
+.copyright{
+	display:flex;
+	justify-content:flex-end;
 }
