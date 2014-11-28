@@ -12,6 +12,8 @@
 
     <script src="../../common/js/jquery-2.1.1.min.js"></script>
     <script src="../../common/js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="../../common/js/util.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <link rel="stylesheet" href="../css/reserve.css"/>
     <script src="../js/reserve.js"> </script>
@@ -26,24 +28,27 @@
         </div>
 
         <div id="container">
+
             <div class="reserve">
+
                 <div class="status">
+
                     <div class="time">
-                        2014 11 16 22:14
+                        &nbsp;
                     </div>
 
                     <div class="count">
-                        15
+                        0
                     </div>
 
                     <div class="msg">
                         명이 기다리고 있습니다
                     </div>
 
-                <div class="status">
                     <div class="msg">예상 대기시간은</div>
 					<div class="expectedtime">60</div>
 					<div class="msg">분 입니다.</div>
+
                 </div>
 
                 <div class="form">
@@ -63,13 +68,14 @@
                 <div class="btn_menu btn"> 메뉴 </div>
                 <div class="btn_table btn"> 테이블 </div>
                 <div class="btn_reserve btn"> 예약하기 </div>
+
             </div>
 
             <div class="lobby">
 
                 <div class="status">
                     <div class="time">
-                        2014 11 16 22:14
+                        &nbsp;
                     </div>
                     <div class="waiting_count">
                         현재 대기 번호 : <span class="count"> 15 </span>
@@ -78,6 +84,7 @@
                         나의 대기 번호 : <span class="count"> 16 </span>
                     </div>
                 </div>
+
             </div>
 
         </div>

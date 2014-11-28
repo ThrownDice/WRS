@@ -41,7 +41,11 @@ var mimeTypes = {
     '.css' : 'text/css'
 };
 
-http.createServer(function(request, response){
+//waiting people count
+var waitCount = 0;
+var currentCustomer = 0;
+
+var app = http.createServer(function(request, response){
 
     var url = decodeURI(request.url);
     console.log(url + ' is requested.');
@@ -72,6 +76,9 @@ http.createServer(function(request, response){
                             name : postDataObject.name,
                             phone : postDataObject.phone
                         });
+
+                        //increase wait count
+                        waitCount++;
 
                         result.status = 'ok';
                         console.log('User Posted : ' + util.inspect(postDataObject));
@@ -126,4 +133,35 @@ http.createServer(function(request, response){
         })
     }
 
-}).listen(8080);
+});
+/**
+ * Socket.IO Event Handling
+ */
+var io = require('socket.io')(app);
+
+io.on('connection', function(socket){
+
+    /**
+     * 처음으로 커넥션을 맺으면 커넥션 성공을 알리고 현재 예약 대기 상태를 전송해줌
+     *
+     * @param status 커넥션 성공 여부  {String}
+     * @param waitCount 현재 예약 대기 인원    {Number}
+     */
+    socket.emit('onConnect', {status:'success', waitCount : waitCount});
+
+    socket.on('onReserveComplete', function(data){
+
+        console.log('onReserveComplete');
+
+        /**
+         * 예약 신청이 완료 된 후 예약 대기 수의 변경이 생겼을 때 일어나는 이벤트
+         * 갱신된 현재 예약 대기 인원을 브로드 캐스팅한다.
+         * (data는 empty)
+         */
+        socket.broadcast.emit('onChangeWaitCount', {waitCount : waitCount});
+
+    })
+
+});
+
+app.listen(8080);
