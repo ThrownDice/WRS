@@ -8,8 +8,13 @@ var fs = require('fs');
 var querystring = require('querystring');
 var util = require('util');
 
+require('date-utils');
+
 //Load DAO
 var dbModule = require('./module_db');
+
+//Load Admin Manage Module
+var adminModule = require('./module_admin');
 
 //max data size
 var maxData = 5 * 1024 * 1024; //5MB
@@ -45,6 +50,17 @@ var mimeTypes = {
 var waitCount = 0;
 var currentCustomer = 0;
 
+//적절한 로직이 생각이 안나서 일단 이렇게 구현해둠.
+// (setTimeout을 사용하지 않고 바로 db로 접근을 시도하면 db가 아직 안열려 있을 경우에 대한
+// 예외처리를 할 수 가 없다. 그에 따른 해결책으로 콜백을 사용해야 하는데 복잡해짐 ㅡㅡ)
+setTimeout(function(){
+    adminModule.getReservationCount(function(count){
+        //최초 예약 대기 번호 및 예약 대기 인원 초기화 (초기화는 db에 남아 있는 데이터 기준)
+        waitCount = count;
+        currentCustomer = count;
+    });
+},1000);
+
 var app = http.createServer(function(request, response){
 
     var url = decodeURI(request.url);
@@ -69,18 +85,27 @@ var app = http.createServer(function(request, response){
                             response.end();
                             return;
                         }
-                        var postDataObject = querystring.parse(postData);
-                        var result = {};
-
-                        dbModule.collection_reservation.create({
-                            name : postDataObject.name,
-                            phone : postDataObject.phone
-                        });
 
                         //increase wait count
                         waitCount++;
 
+                        var postDataObject = querystring.parse(postData);
+                        var reserveNum = waitCount + currentCustomer;   //손님의 대기 번호
+                        var result = {};
+
+
+                        dbModule.collection_reservation.create({
+                            name : postDataObject.name,
+                            phone : postDataObject.phone,
+                            reserveNum : reserveNum,
+                            reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI')
+                        });
+
+                        //예약 성공 여부와 현재 예약 상황을 전송
                         result.status = 'ok';
+                        result.currentCustomer = currentCustomer;
+                        result.reserveNum = reserveNum;
+
                         console.log('User Posted : ' + util.inspect(postDataObject));
                         response.end(JSON.stringify(result));
                     })
@@ -137,6 +162,7 @@ var app = http.createServer(function(request, response){
 /**
  * Socket.IO Event Handling
  */
+//Load Socket Module
 var io = require('socket.io')(app);
 
 io.on('connection', function(socket){
@@ -160,7 +186,21 @@ io.on('connection', function(socket){
          */
         socket.broadcast.emit('onChangeWaitCount', {waitCount : waitCount});
 
-    })
+    });
+
+    socket.on('getReservationInfo', function(data){
+
+        /**
+         * 관리자 페이지에서 예약 대기 인원이 갱신되었을 때 요청되는 이벤트
+         * 예약 정보를 다시 관리자에게 보내준다.
+         * (data는 empty)
+         */
+
+        adminModule.getReservationInfo(function(data){
+            socket.emit('onReservationInfo', {reserveList : data});
+        });
+
+    });
 
 });
 

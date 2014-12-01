@@ -6,8 +6,10 @@
  *
  * script for mobile page
  *
+ * @author KANG JI HYEON (kiwlgus1@korea.ac.kr)
  * @Dependencies jquery.mobile-1.4.5.min.js
  * @Dependencies jquery-2.1.1.min.js
+ * @Dependencies socket.io.js
  */
 (function(){
 
@@ -94,19 +96,31 @@
                  *
                  * response
                  * @param status ok 혹은 fail {String}
+                 * @param currentCustomer 현재 대기 번호  {Number}
+                 * @param reserveNum    예약신청한 손님의 대기번호  {Number}
                  */
                 var result = JSON.parse(response);
 
-                $('.reserve').animate({
-                    left : '-100%'
-                }, 500);
-                $('.lobby').animate({
-                    left : '-50%'
-                });
+                //예약을 성공시
+                if(result.status == 'ok'){
 
-                //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
-                socket.emit('onReserveComplete', {});
+                    $('.reserve').animate({
+                        left : '-100%'
+                    }, 500);
+                    $('.lobby').animate({
+                        left : '-50%'
+                    });
 
+                    //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
+                    socket.emit('onReserveComplete', {});
+
+                    console.log(result);
+
+                    //서버에서 전송 받은 예약 대기 현황을 찍어줌
+                    $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
+                    $('.lobby .status .my_count .count').html(result.reserveNum); //나의 대기 번호
+
+                }
             });
 
         });

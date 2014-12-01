@@ -33,7 +33,9 @@ exports.collection_reservation = {
             db.collection('reservation', function(err, collection){
                 collection.insert({
                     name : data.name,
-                    phone : data.phone
+                    phone : data.phone,
+                    reserveNum : data.reserveNum,
+                    reserveTime : data.reserveTime
                 }, function(err, result){
                     if(err){
                         console.log('Can\'t insert data : ' + util.inspect(data));
@@ -45,9 +47,26 @@ exports.collection_reservation = {
         }
         return;
     },
-    //read reservation document
+    /**
+     * find data in reservation collection
+     * @param data  {JSONObject}
+     */
     read : function(data){
-
+        db.collection('reservation', function(err, collection) {
+            collection.find(data).toArray(function (err, results) {
+                if (err) {
+                    console.log(err);
+                    console.log('Can\'t find ' + util.inspect(data));
+                } else {
+                    if(data){
+                        console.log('find ' + util.inspect(results));
+                    }else{
+                        console.log('find all reservation data');
+                    }
+                    data.callback(results);
+                }
+            });
+        });
     },
     //update reservation document
     update : function(data){
@@ -56,6 +75,21 @@ exports.collection_reservation = {
     //delete reservation document
     remove : function(data){
 
+    },
+    /**
+     * get reservation info count
+     * @param data  {JSONObject}
+     */
+    count : function(data){
+        db.collection('reservation', function(err, collection) {
+            collection.find(data).count(function(err, count){
+                if(!err){
+                    data.callback(count);
+                }else{
+                    console.log(err);
+                }
+            });
+        });
     }
 
 };
@@ -96,5 +130,3 @@ exports.collection_table = {
     //remove table document
 };
 
-exports.dbModule;
-//export(dbModule);
