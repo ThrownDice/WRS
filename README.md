@@ -12,6 +12,6 @@ node module_webserver.js
 
 Dependencies
 ===
-date-utils module
-mongodb module
-socket.io module
+date-utils module,
+mongodb module,
+socket.io module,
