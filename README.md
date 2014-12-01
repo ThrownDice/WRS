@@ -9,3 +9,9 @@ Start
 node module_webserver.js
 
 (If you use hotnode, use command 'hotnode module_webserver.js')
+
+Dependencies
+===
+date-utils module
+mongodb module
+socket.io module
