@@ -14,6 +14,7 @@
     <script src="../../common/js/jquery.mobile-1.4.5.min.js"></script>
 
     <link rel="stylesheet" href="../css/reserve.css"/>
+    <script src="../../common/js/common-1.js"></script>
     <script src="../js/reserve.js"> </script>
 
 </head>
@@ -32,7 +33,7 @@
 
                 <div class="status">
 
-                    <div class="time">
+                    <div class="time" id="timer">
                         2014 11 16 22:14
                     </div>
 
@@ -70,9 +71,13 @@
 
                 </div>
 
-                <div class="btn_menu btn"> 메뉴 </div>
+                <div class="btn_menu btn"> 메뉴 
+                	<div class="menu_submenu"></div>
+                </div>
 
-                <div class="btn_table btn"> 테이블 </div>
+                <div class="btn_table btn"> 테이블 
+                	<div class="table_submenu"></div>
+                </div>
 
                 <div class="btn_reserve btn"> 예약하기 </div>
 
