@@ -1,15 +1,15 @@
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+﻿@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
 
-/*메인컬러*/
+/*Main colors*/
 /*
-연한 블랙 : #565A61
-노멀 블랙 : #26282B
-진한 블랙 : #141517
-노멀 그린 : #58BD2F
-진한 그린 : #3A7D1F
-노멀 청색 : #2970BD
-진한 청색 : #1B4A7D
+light black : #565A61
+normal black : #26282B
+dark black : #141517
+normal green : #58BD2F
+dark green : #3A7D1F
+normal blue : #2970BD
+dark blue : #1B4A7D
 */
 
 body{
@@ -21,7 +21,7 @@ body{
     overflow : hidden;
 }
 
-/* 레이아웃 설정을 위한 가이드 라인 */
+/* guideline for layout */
 /*div{
     border : 1px solid white;
 }*/
@@ -34,7 +34,7 @@ body{
 }
 
 
-/*header에 관련된 CSS*/
+/*CSS related to header*/
 #header{
     height : 100px;
 }
@@ -87,9 +87,9 @@ body{
     color : #58BD2F;
 }
 
-/*header에 관련된 CSS -끝- */
+/*end CSS for header */
 
-/*container에 관련된 CSS*/
+/* CSS related to container*/
 #container{
     width : 100%;
     height : 500px;
@@ -142,9 +142,9 @@ body{
     color : #58BD2F;
 }
 
-/*container에 관련된 CSS -끝-*/
+/*end CSS for container*/
 
-/*footer에 관련된 CSS*/
+/*CSS related to footer*/
 #footer{
     width : 100%;
     height : 100px;
@@ -156,4 +156,4 @@ body{
     color : #565A61;
 }
 
-/*footer에 관련된 CSS -끝-*/
+/*end CSS for footer*/
