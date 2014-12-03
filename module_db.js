@@ -113,13 +113,40 @@ exports.collection_users = {
 
     }
 };
-
+/**
+ * 메뉴 DAO 객체는 아마 거의 안 쓰게 될 것 같다. 데이터가 fix되어 있어서
+ * 그냥 서버에서 DB 참조 안하고 수동으로 고정되어 있는 데이터 넘겨줘도
+ * 무방하지 않을까 생각함.
+ * 우선은 수동으로 구정되어 있는 데이터 넘겨주도록 함. (DB와 interact 안함)
+ *
+ * @type {{create: create, read: read, update: update, remove: remove}}
+ */
 //Menu Collection CRUD
 exports.collection_menu = {
     //create menu document
+    create : function(data){
+
+    },
     //read menu document
+    read : function(data){
+        //fix된 데이터를 그냥 리턴
+        var menuData = [
+            {id : 1, name : '새우튀김', price : 9900, img : 'menu01.jpg'},
+            {id : 2, name : '보쌈', price : 12800, img : 'menu02.jpg'},
+            {id : 3, name : '김치찌개', price : 6600, img : 'menu03.jpg'},
+            {id : 4, name : '비빔밥', price : 6600, img : 'menu04.jpg'},
+            {id : 5, name : '냉면', price : 7700, img : 'menu05.jpg'}
+        ];
+        data.callback(menuData);
+    },
     //update menu document
+    update : function(data){
+
+    },
     //remove menu document
+    remove : function(data){
+
+    }
 };
 
 //Table Collection CRUD
