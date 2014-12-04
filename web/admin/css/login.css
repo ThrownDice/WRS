@@ -13,12 +13,35 @@ body{
 }
 
 .logo-fluid{
+	padding-top:3%;
+	padding-bottom:3%;
 	display:flex;
 	justify-content:center;
 }
 
-.btn_signin{
+.container-fluid{
+	padding-top:5%;
+	padding-bottom:5%;
+}
+
+.btn-block{
 	color:#565A61;
+	background:linear-gradient(white,#99976B);
+	border-style:none;
+	border-radius:4px;
+	padding-top:2%;
+	padding-bottom:2%;
+}
+
+.btn-block:hover{
+	color:#26282B;
+}
+
+#footer{
+	padding-top:15%;
+	padding-bottom:10%;
+	padding-right:5%;
+	width:95%;
 }
 
 .linktoreservep{
@@ -27,7 +50,15 @@ body{
 }
 
 .linktoreservep a{
-	color:gray;
+	color:#787768;
+}
+
+.linktoreservep a:visited{
+	color:#787768;
+}
+
+.linktoreservep a:hover, active{
+	color:#54665B;
 }
 
 .copyright{
