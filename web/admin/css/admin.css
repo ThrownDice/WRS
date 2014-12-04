@@ -1,4 +1,4 @@
-﻿@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
 
 /*Main colors*/
@@ -133,8 +133,17 @@ body{
     border-collapse: collapse;
 }
 
+#container #contents .reservation .add_custom{
+	width:1000px;
+	text-align:right;
+}
+
 .tab_menu{
-    display : none;
+	display:none;
+}
+
+.menu tab_menu .tab_menu_table{
+	width:1000px;
 }
 
 .reservation_table .header{
