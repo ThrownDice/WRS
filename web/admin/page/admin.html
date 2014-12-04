@@ -8,10 +8,11 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../common/js/util.js"></script>
 
-    <link rel="stylesheet" href="../../common/css/normalize.css"/>
+    <link rel="stylesheet" href="/web/common/css/normalize.css"/>
     <link rel="stylesheet" href="../css/admin.css"/>
-
-    <script src="../js/admin.js"></script>
+    
+    <script src="../../common/js/common-1.js"></script>
+	<script src="../js/admin.js"></script>
 
 </head>
 <body>
@@ -27,8 +28,7 @@
 
             <div class="status">
 
-                <div class="time">
-                    &nbsp;
+                <div class="time" id="timer">
                 </div>
 
                 <div class="waiting">
@@ -58,9 +58,9 @@
 
             <div class="snb">
 
-                <div class="menu"> 예약 </div>
-                <div class="menu"> 테이블 </div>
-                <div class="menu"> 메뉴 </div>
+                <div class="menu" id="menu_reserve"> 예약 </div>
+                <div class="menu" id="menu_table"> 테이블 </div>
+                <div class="menu" id="menu_menu"> 메뉴 </div>
 
             </div>
 
@@ -87,15 +87,22 @@
                             <td> 메뉴 </td>
                             <td> 좌석 </td>
                             <td> 취소 </td>
-                        </tr>-->
-
+                            -->
                     </table>
-
+					<table class="add_custom">
+						<tr><td>예약 추가</td></tr>
+					</table>
 
                 </div>
 
                 <div class="menu tab_menu">
-
+					<table class="tab_menu_table">
+						<tr>
+							<th>메뉴</th>
+							<th>가격</th>
+							<th>사진</th>
+						</tr>
+					</table>
                 </div>
 
                 <div class="table tab_menu">
