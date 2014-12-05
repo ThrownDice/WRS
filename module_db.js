@@ -152,8 +152,27 @@ exports.collection_menu = {
 //Table Collection CRUD
 exports.collection_table = {
     //create table document
+    create : function(data){
+
+    },
     //read table document
+    read : function(data){
+        //fix된 데이터를 그냥 리턴
+        var tableData = [
+            {id : 1, capacity : 4, available : true},
+            {id : 2, capacity : 2, available : true},
+            {id : 3, capacity : 4, available : false},
+            {id : 4, capacity : 2, available : false}
+        ];
+        data.callback(tableData);
+    },
     //update table document
+    update : function(data){
+
+    },
     //remove table document
+    remove : function(data){
+
+    }
 };
 

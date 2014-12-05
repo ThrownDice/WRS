@@ -71,6 +71,11 @@ setTimeout(function(){
             menuData = data;
         }
     });
+    dbModule.collection_table.read({
+        callback : function(data){
+            tableData = data;
+        }
+    })
 },1000);
 
 var app = http.createServer(function(request, response){
@@ -129,7 +134,6 @@ var app = http.createServer(function(request, response){
                 //Get Menu Action
                 request.on('data', function(chunk) {
                     //do something
-
                 }).on('end', function(){
 
                     var result = {};
@@ -142,9 +146,20 @@ var app = http.createServer(function(request, response){
                 });
             }
         },
-        {route : '/action/get_table', doAction : function(data){
+        {route : '/action/get_table', doAction : function(request, response){
                 //Get Table Status Action
+                request.on('data', function(chunk){
+                    //do something
+                }).on('end', function(){
 
+                    var result ={};
+                    result.status = 'ok';
+                    result.table = tableData;
+
+                    console.log(util.inspect(result));
+                    response.end(JSON.stringify(result));
+
+                });
             }
         }
     ];
