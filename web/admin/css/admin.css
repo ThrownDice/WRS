@@ -138,11 +138,7 @@ body{
 	text-align:right;
 }
 
-.tab_menu{
-	display:none;
-}
-
-.menu tab_menu .tab_menu_table{
+.tab_menu_table{
 	width:1000px;
 }
 

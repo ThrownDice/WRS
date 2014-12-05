@@ -82,8 +82,8 @@
                             <td> 141116 20:36 </td>
                             <td> 강지현 </td>
                             <td> 010 - 0000 - 0000 </td>
-                            <td> 메뉴 </td>
-                            <td> 좌석 </td>
+                            <td class="reserved_menu"> 메뉴 </td>
+                            <td class="reserved_table"> 좌석 </td>
                             <td> 취소 </td>
                         </tr>
                     </table>
@@ -93,7 +93,7 @@
 
                 </div>
 
-                <div class="menu tab_menu">
+                <div class="menu tab_menu" id="menu_tabmn">
 					<table class="tab_menu_table">
 						<tr>
 							<th>메뉴</th>
@@ -103,9 +103,17 @@
 					</table>
                 </div>
 
-                <div class="table tab_menu" >
-                	<div class="table_image"></div>
-					<div class="table_info">테이블 정보</div>
+                <div class="table tab_menu" id="table_tabmn">
+                	<div class="table_image"><img src="" alt="img_table"></div>
+					<div class="table_info">
+						<table>
+							<tr>
+								<th>번호</th>
+								<th>수용인원</th>
+								<th></th>
+							</tr>
+						</table>
+					</div>
                 </div>
 
             </div>
