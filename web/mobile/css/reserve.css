@@ -126,20 +126,5 @@ body{
 }
 
 
-.reserve{
-    position : relative;
-    width : 50%;
-    left : 0%;
-    float : left;
-}
 
-.lobby{
-    position : relative;
-    width : 50%;
-    float : left;
-    left : 100%;
-    /*position : relative;
-    left : 100%;
-    width : 100%;*/
-}
 /*footer 부분*/

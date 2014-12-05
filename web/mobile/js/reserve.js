@@ -37,7 +37,6 @@
             }
 
         });
-
         socket.on('onChangeWaitCount', function(data){
 
             /**
@@ -67,13 +66,56 @@
             $('.lobby .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
         }, 1000);
 
+
+        //메뉴클릭
+        $('#menu_list').on('click', 'li', function() {
+
+
+            $.mobile.changePage('#page1');
+            $('#menu_list').empty();
+            //alert($(this).attr('id'));
+        });
+
         //Menu Button Event Handler
         $('.btn_menu').on('click', function(){
 
+            $.ajax({
+                url : '/action/get_menu'
+            }).done(function(response) {
+                var result = JSON.parse(response);
+                if(result.status == 'ok') {
+
+                    $.mobile.changePage('#page3', { transition: "slide"});
+
+                    socket.emit('onMenuComplete', {});
+                    console.log(result);
+
+                    var array = result.menu;
+
+                    $.each(array, function(index,item){
+
+                        var output = '';
+
+                        output += '<li id="'+(index+1)+'">';
+            //            output += '     <a href="index.html">';
+                        output += '         <img src=../../menu/'+item.img +' />';
+                        output += '         <h3>'+ item.name +'</h3>';
+                        output += '         <p>' + item.price + '</p>';
+                 //       output += '     </a>';
+                        output += '</li>';
+                        $(output).appendTo('ul');
+                        $('ul').listview('refresh');
+                    });
+
+                }    
+
+
+            })
+           
         });
 
         //Table Button Event Handler
-        $('.btn_menu').on('click', function(){
+        $('.btn_table').on('click', function(){
 
         });
 
@@ -104,12 +146,15 @@
                 //예약을 성공시
                 if(result.status == 'ok'){
 
-                    $('.reserve').animate({
-                        left : '-100%'
-                    }, 500);
-                    $('.lobby').animate({
-                        left : '-50%'
-                    });
+                    $.mobile.changePage('#page2');
+
+
+//                    $('.reserve').animate({
+//                        left : '-100%'
+//                    }, 500);
+//                    $('.lobby').animate({
+ //                       left : '-50%'
+  //                  });
 
                     //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
                     socket.emit('onReserveComplete', {});
