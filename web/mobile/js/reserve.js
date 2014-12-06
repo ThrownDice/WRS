@@ -16,6 +16,14 @@
     //DON Load Completed
     $(function(){
 
+        //메뉴정보 저장하는 전역변수
+        var reserveMenu = [];
+
+        function Menu(id, cnt) {
+            this.menuId  = id;
+            this.count = cnt;
+        }
+
         //Socket.IO connection
         var socket = io(window.location.protocol + '//' + window.location.hostname + ':' +
         window.location.port);
@@ -67,48 +75,66 @@
         }, 1000);
 
 
-        //메뉴클릭
-        $('#menu_list').on('click', 'li', function() {
-
-
-            $.mobile.changePage('#page1');
-            $('#menu_list').empty();
-            //alert($(this).attr('id'));
-        });
-
-        //Menu Button Event Handler
+        // 메뉴버튼 클릭 핸들러
         $('.btn_menu').on('click', function(){
 
+            reserveMenu = new Array();
             $.ajax({
                 url : '/action/get_menu'
             }).done(function(response) {
                 var result = JSON.parse(response);
                 if(result.status == 'ok') {
 
-                    $.mobile.changePage('#page3', { transition: "slide"});
+                    $.mobile.changePage('#pagemenu');
 
                     socket.emit('onMenuComplete', {});
                     console.log(result);
 
                     var array = result.menu;
 
+
+
                     $.each(array, function(index,item){
 
                         var output = '';
 
-                        output += '<li id="'+(index+1)+'">';
-            //            output += '     <a href="index.html">';
-                        output += '         <img src=../../menu/'+item.img +' />';
-                        output += '         <h3>'+ item.name +'</h3>';
-                        output += '         <p>' + item.price + '</p>';
-                 //       output += '     </a>';
-                        output += '</li>';
-                        $(output).appendTo('#menu_list');
-                        $('ul#menu_list').listview('refresh');
+                        output += '<li data-theme="a" id="'+this.id+'" >';
+                        output += '     <img src=../../menu/'+this.img +' />';
+                        output += '     <h3 class="m_name">'+ this.name +'</h3>';
+                        output += '     <p class="m_price">' + this.price + '원</p>';
+                        output += '     <input type="checkbox">';
+                        output += '     <div class="m_count">';
+                        output += '     <select data-native-menu="false" class="menu_select">';
+                        output += '         <option>수량</option>';
+                        output += '         <option value="1">1인분</option>';
+                        output += '         <option value="2">2인분</option>';
+                        output += '         <option value="3">3인분</option>';
+                        output += '         <option value="4">4인분</option>';
+                        output += '     </select>';
+                        output += '     </div>';
+                        output += '</li>'
+                        $(output).appendTo('ul');               
                     });
-                }
+                     $('ul').listview('refresh');
+
+                }    
+
+
             })
            
+        });
+        // 메뉴페이지에서 선택완료 버튼 클릭 핸들러
+        $('.btn_choice').on('click', function(){
+
+            $('#pagemenu .ui-content li').each(function (index,item){
+                if($(this).children('input[type="checkbox"]').prop("checked"))
+                {
+                    var menu = new Menu($(this).attr('id'),$(this).find('.menu_select option:selected').val());
+                    reserveMenu.push(menu);
+                }
+            });
+            $.mobile.changePage('#page1');
+            $('#menu_list').empty();
         });
 
         //Table Button Event Handler
@@ -126,41 +152,27 @@
                     socket.emit('onTableComplete', {});
                     console.log(result);
 
-
                     //테이블 데이터 리스트입니다
                     //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
-                    var table = result.table;
-
-                    $.each(table, function (index, item) {
-
-                        var info = '';
-                        var i;
-                        i = index + 1;
-
-                        info += '<li id="' + (index + 1) + '">';
-                        info += '         <h3>' + item.capacity + '</h3>';
-                        info += '         <p>' + item.available + '</p>';
-                        info += '</li>';
-
-
-                        $(info).appendTo('#table_list');
-
-                        /*switch (i) {
-                            case 1 :
-                                $(info).appendTo('.big_a');
-                            case 2 :
-                                $(info).appendTo('.small_a');
-                            case 3 :
-                                $(info).appendTo('.big_b');
-                            case 4 :
-                                $(info).appendTo('.small_b');
-                            default :
-                        }*/
-                        $('ul#table_list').listview('refresh');
+                    var array = result.table;
+                    $.each(array, function (index,item){
+                        if(this.available)
+                        {
+                            $('.table_'+this.id+'').css('background-color','green').addClass('table_available');
+                        }
+                        else
+                        {
+                            $('.table_'+this.id+'').css('background-color','red').addClass('table_not_available');
+                        }
                     });
                 }
             });
+        });
 
+        $('.table_node').on('click', function(){
+            if($(this).hasClass('table_available'))
+                alert($(this).attr("value"));
+           
         });
 
         //Reserve Button Event Handler
@@ -169,9 +181,10 @@
             var name = $('.input_name').val();
             var phone = $('.input_phone').val();
 
+
             $.ajax({
                 url : '/action/reserve',
-                data : {name : name, phone : phone},
+                data : {name : name, phone : phone, reserveMenu : reserveMenu},
                 type : 'POST'
             }).done(function(response){
                 /**
@@ -191,14 +204,6 @@
                 if(result.status == 'ok'){
 
                     $.mobile.changePage('#page2');
-
-
-//                    $('.reserve').animate({
-//                        left : '-100%'
-//                    }, 500);
-//                    $('.lobby').animate({
- //                       left : '-50%'
-  //                  });
 
                     //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
                     socket.emit('onReserveComplete', {});

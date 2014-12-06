@@ -21,9 +21,10 @@
 </head>
 <body>
 
+
     <div data-role="page" id="page1">
         <div data-role="header">
-            <h1>Page 1</h1>
+            <h1>Reservation</h1>
             <a href="#" class="btn_bars ui-btn ui-btn-a ui-icon-bars ui-btn-icon-notext ui-corner-all"></a>
         </div>
         <div role="main" class="ui-content">
@@ -72,10 +73,9 @@
 
         </div>
     </div>
-
     <div data-role="page" id="page2">
         <div data-role="header">
-            <h1>Page 2</h1>
+            <h1>Reservation</h1>
         </div>
         <div role="main" class="ui-content">
 
@@ -98,16 +98,17 @@
         </div>
     </div>    
 
-    <div data-role="page" id="page3">
-
+    <div data-role="page" id="pagemenu">
         <div data-role="header">
             <h1>Menu</h1>
         </div>
-
         <div role="main" class="ui-content">
-            <ul data-role="listview" id="menu_list"> </ul>
-        </div>
+            <ul data-role="listview" id="menu_list" data-inset="true"data-split-theme="a">
+            
+            </ul>
+            <div class="btn_choice btn"> 선택완료 </div>
 
+        </div>
     </div>
 
     <div data-role="page" id="page4">
@@ -117,22 +118,22 @@
         <div role="main" class="ui-content">
 
             <div class="table_wrap">
-                <div class="table_node table_1">
-                    1번 테이블
+                <div class="table_node table_1" value="1">
+                  
                 </div>
-                <div class="table_node table_2">
-                    2번 테이블
+                <div class="table_node table_2" value="2">
+                   
                 </div>
-                <div class="table_node table_3">
-                    3번 테이블
+                <div class="table_node table_3" value="3">
+                    
                 </div>
-                <div class="table_node table_4">
-                    4번 테이블
+                <div class="table_node table_4" value="4">
+                    
                 </div>
             </div>
 
+            <a href="#page1" data-rel="back" data-transition="slide" class="ui-btn ui-corner-all ui-btn-inline">Go Back To Page 1</a>
         </div>
-
     </div>
 
 </body>
