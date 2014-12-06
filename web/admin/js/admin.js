@@ -23,19 +23,23 @@
 	   *
 	   * @param node 예약정보 {JSONObject}
 	   */
-	 adminCtl.addReservationInfo = function(node){
+	 adminCtl.addReservationInfo = function(node, menulength){
 	       var newRow = $('<tr>');
 	          newRow.append($('<td>' + node.reserveNum + '</td>'));
 	          newRow.append($('<td>' + node.reserveTime + '</td>'));
 	          newRow.append($('<td>' + node.name + '</td>'));
 	          newRow.append($('<td>' + node.phone + '</td>'));
-	          newRow.append($('<td>' + '메뉴' + '</td>'));
-	          newRow.append($('<td>' + '좌석' + '</td>'));
+	          newRow.append($('<td class="reserved_menu">' + '<span class="menu_1">' + '메뉴' + '</span>' + '<span class="menu_2">' + '</span>' + '</td>'));
+	          newRow.append($('<td class="reserved_table">' + '<span class="table_1">' + '좌석' + '</span>' + '<span class="table_2">' + '</span>' + '</td>'));
 	          newRow.append($('<td class="cancel_reservation">' + '취소' + '</td>'));
 	  
+	          for(var i=0;i<menulength;i++){
+	        	  newRow.($(".menu_2")).append($('<br>'+node.array[i].menuId+'//'+ node.array[i].count + '</br>'));
+	          }
+	          
 	          $('.reservation_table').append(newRow);
 	      };
-	  
+	      
 	      //DON Load Completed
 	      $(function(){
 	  
@@ -90,13 +94,15 @@
 	  
 	                  var reserveList = data.reserveList;
 	                  var length = reserveList.length;
+	                  var menulength = reserveList[i].array.length;
 	  
 	                  //데이터를 갱신하기 전에 테이블을 초기화
 	                  adminCtl.clearReservationTable();
 	  
 	                  //새롭게 받은 데이터로 갱신
 	                  for(var i=0; i<length; i++){
-	                      adminCtl.addReservationInfo(reserveList[i]);
+	                      adminCtl.addReservationInfo(reserveList[i],j);
+	                    
 	                  }
 	  
 	              });
@@ -114,7 +120,10 @@
 	      				newData.append($("<td>"+menuData[i].name+"</td>"));
 	      				newData.append($("<td>"+menuData[i].price+"원</td>"));
 	      				newData.append($("<td><span><img src=/menu/"+menuData[i].img+"></span></td></tr>"));
-	      						
+	      				
+	      				var newOption=$(".select_menu").append("<option>");
+	      				newOption.append($(menuData[i].name));
+	      				newOption.attr("val",menuData[i].id);
 	      			}
 	      		});
 	      	
@@ -129,7 +138,13 @@
 	      				var newData=$(".table_info_table").append("<tr>");
 	      				newData.append($("<td>"+tableData[i].id+"</td>"));
 	      				newData.append($("<td>"+tableData[i].capacity+"</td>"));
-	      				newData.append($("<td>"+tableData[i].available+"</span></td></tr>"));
+	      				newData.append($("<td>"+tableData[i].available+"</td></tr>"));
+	      				
+	      				if(tableData[i].available){
+	      					var newOption=$(".select_table").append("<option>");
+	      					newOption.append($(tableData[i].id));
+	      					newOption.attr("val",tableData[i].id);
+	      				}
 	      			}
 	      		});
 	      	
@@ -169,6 +184,10 @@
 	        $(".add_reservation").click(function(){
 	      	  var reservationName=$(".reservation_name").val();
 	      	  var reservationPhone=$(".reservation_phone").val();
+	      	  var reservationMenu=$(".select_menu").val();
+	      	  if(reservationMenu!="menu_default"){
+	      		  var menuCount=$(".select_menu_count").val();
+	      	  }
 	      	  
 	      	 if((reservationName)&&(reservationPhone)){
 	      		 var theDate=new date();
@@ -176,6 +195,7 @@
 	      			 data:{
 	      				 name:reservationName;
 	      		 		 phone:reservationPhone;
+	      		 		 array:{menuId:reservationMenu;count:menuCount;};
 	      			 	},
 	      			 type:'POST'})
 	      			 .done(function(response){
@@ -191,10 +211,26 @@
 	      	 }
 	        });
 	        
+	        $(".menu_1").click(function(){
+	        	$(".menu_2").toggle();
+	        });
+	        
+	        $(".table_1").click(function(){
+	        	$(".table_2").toggle();
+	        });
+	        
+	        /*
+	        $(".select_menu").select(function(){
+	        	if($(".select_menu").val()!="menu_default"){
+	        		var newSelection=$("#select_menu_set").html();
+	        		$(".reserve_form").append("<br>"+newSelection+"</br>");
+	        	}
+	        });*/
+	        
 	              //시계 초기화
-	              setInterval(function(){
-	                  $('.status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
-	              }, 1000);
+	         setInterval(function(){
+	             $('.status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
+          }, 1000);
 
 	          });
 	      })();

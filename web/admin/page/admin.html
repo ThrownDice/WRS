@@ -94,8 +94,14 @@
 						예약 정보:
 						<input type="text" class="reservation_name" value="name"></input>
 						<input type="text" class="reservation_phone" value="phone number"></input>
-						<select class="select_menu"><option selected>Menu</option></select>
-						<select class="select_table"><option selected>Table</option></select>
+						<span id="select_menu_set"><select class="select_menu"><option val="menu_default">menu</option></select>
+						<select class="select_menu_count">
+						<option val="1">1인분</option>
+						<option val="2">2인분</option>
+						<option val="3">3인분</option>
+						<option val="4">4인분</option>
+						</select></span>
+						<select class="select_table"><option val="table_default">Table</option></select>
 						</form>
 						</td>
 						<td class="add_reservation">예약 추가</td></tr>
