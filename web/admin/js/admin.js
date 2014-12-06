@@ -34,7 +34,7 @@
 	          newRow.append($('<td class="cancel_reservation">' + '취소' + '</td>'));
 	  
 	          for(var i=0;i<menulength;i++){
-	        	  newRow.($(".menu_2")).append($('<br>'+node.array[i].menuId+'//'+ node.array[i].count + '</br>'));
+	        	  newRow.($(".menu_2")).append($('<br>'+node.array[i].menuId+'/'+ node.array[i].count));
 	          }
 	          
 	          $('.reservation_table').append(newRow);
@@ -178,16 +178,24 @@
 	        //shows the reservation form as the mouse enters "예약 추가"
 	        $(".add_reservtion").mouseenter(function(){
 	      	 $(".reserve_form").css("display","flex"); 
+	      	 $("#menu_form").css("display","block");
 	        });
+	        
+	        $("#add_menu").click(function(){
+	        	var newSelect=$("#menu_form").html();
+	        	$(".menu_data").append('<span>'+newSelect+'</span>');
+	        })
 	        
 	        //add reservation by clicking the table element
 	        $(".add_reservation").click(function(){
 	      	  var reservationName=$(".reservation_name").val();
 	      	  var reservationPhone=$(".reservation_phone").val();
+	      	  //수정해야 함.
 	      	  var reservationMenu=$(".select_menu").val();
 	      	  if(reservationMenu!="menu_default"){
 	      		  var menuCount=$(".select_menu_count").val();
 	      	  }
+	      	  var reservationArray=new array[]
 	      	  
 	      	 if((reservationName)&&(reservationPhone)){
 	      		 var theDate=new date();
@@ -195,7 +203,7 @@
 	      			 data:{
 	      				 name:reservationName;
 	      		 		 phone:reservationPhone;
-	      		 		 array:{menuId:reservationMenu;count:menuCount;};
+	      		 		 array:{{menuId:reservationMenu;count:menuCount;};};
 	      			 	},
 	      			 type:'POST'})
 	      			 .done(function(response){
@@ -219,13 +227,6 @@
 	        	$(".table_2").toggle();
 	        });
 	        
-	        /*
-	        $(".select_menu").select(function(){
-	        	if($(".select_menu").val()!="menu_default"){
-	        		var newSelection=$("#select_menu_set").html();
-	        		$(".reserve_form").append("<br>"+newSelection+"</br>");
-	        	}
-	        });*/
 	        
 	              //시계 초기화
 	         setInterval(function(){

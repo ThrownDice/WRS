@@ -139,13 +139,18 @@ body{
 	padding-top:20px;
 }
 
-.reserve_data{
-	width:80%;
-}
-
 .reserve_form{
 	display:none;
 	justify-content:space-around;
+}
+
+#menu_form{
+	display:none;
+}
+
+#add_menu:hover{
+    background-color: #141517;
+    color : #58BD2F;	
 }
 
 .add_reservation{
