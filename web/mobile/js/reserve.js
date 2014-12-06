@@ -92,8 +92,6 @@
 
                     var array = result.menu;
 
-
-
                     $.each(array, function(index,item){
 
                         var output = '';
@@ -116,16 +114,11 @@
                         $(output).appendTo('ul');               
                     });
                      $('ul').listview('refresh');
-
-                }    
-
-
+                }
             })
-           
         });
         // 메뉴페이지에서 선택완료 버튼 클릭 핸들러
         $('.btn_choice').on('click', function(){
-
             $('#pagemenu .ui-content li').each(function (index,item){
                 if($(this).children('input[type="checkbox"]').prop("checked"))
                 {
@@ -172,7 +165,6 @@
         $('.table_node').on('click', function(){
             if($(this).hasClass('table_available'))
                 alert($(this).attr("value"));
-           
         });
 
         //Reserve Button Event Handler
@@ -181,10 +173,9 @@
             var name = $('.input_name').val();
             var phone = $('.input_phone').val();
 
-
             $.ajax({
                 url : '/action/reserve',
-                data : {name : name, phone : phone, reserveMenu : reserveMenu},
+                data : {'name' : name, 'phone' : phone, 'reserveMenu' : JSON.stringify(reserveMenu)},
                 type : 'POST'
             }).done(function(response){
                 /**

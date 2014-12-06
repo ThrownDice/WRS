@@ -114,7 +114,8 @@ var app = http.createServer(function(request, response){
                             name : postDataObject.name,
                             phone : postDataObject.phone,
                             reserveNum : reserveNum,
-                            reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI')
+                            reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI'),
+                            reserveMenu : postDataObject.reserveMenu
                         });
 
                         //예약 성공 여부와 현재 예약 상황을 전송
@@ -122,7 +123,6 @@ var app = http.createServer(function(request, response){
                         result.currentCustomer = currentCustomer;
                         result.reserveNum = reserveNum;
 
-                        console.log('User Posted : ' + util.inspect(postDataObject));
                         response.end(JSON.stringify(result));
                     })
                 }else if(request.method == 'GET'){

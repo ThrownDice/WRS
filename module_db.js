@@ -35,7 +35,8 @@ exports.collection_reservation = {
                     name : data.name,
                     phone : data.phone,
                     reserveNum : data.reserveNum,
-                    reserveTime : data.reserveTime
+                    reserveTime : data.reserveTime,
+                    reserveMenu : data.reserveMenu
                 }, function(err, result){
                     if(err){
                         console.log('Can\'t insert data : ' + util.inspect(data));
