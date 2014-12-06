@@ -157,7 +157,7 @@ body{
     color : #58BD2F;
 }
 
-.tab_menu_table{
+.menu_info_table{
 	width:100%;
 	margin : 0px auto;
     border : 1px solid #565A61;
@@ -176,11 +176,11 @@ body{
 }
 
 #table_tabmn .table_image{
-	width:30%;
+	width:60%;
 }
 
 #table_tabmn .table_info{
-	width:70%;
+	width:30%;
 }
 
 #table_tabmn .table_info .table_info_table{
@@ -188,6 +188,14 @@ body{
     width : 100%;
     border : 1px solid #565A61;
     border-collapse: collapse;
+}
+
+#table_tabmn .table_info .table_info_table .header{
+	color : #58BD2F;
+}
+
+#menu_tabmn .menu_info_table .header{
+    color : #58BD2F;
 }
 
 /*end CSS for container*/
