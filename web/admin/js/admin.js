@@ -5,7 +5,7 @@
 $(document).ready(function(){
   $(function(){
 	  //load reservation status
-	  $.ajax({"/action/get_reservation"}
+	  $.ajax({URL:"/action/get_reservation",type:"GET"}
 		.done(function(response){
 			var result=JSON.parse(response);
 			var reservationData=result.reservation;
@@ -18,7 +18,7 @@ $(document).ready(function(){
 		});
 	);
 	  //load menu lists
-		$.ajax({"/action/get_menu"}
+		$.ajax({url:"/action/get_menu", type:"GET"}
 		.done(function(response){
 			var result=JSON.parse(response);
 			var menuData=result.menu;
@@ -32,7 +32,7 @@ $(document).ready(function(){
 	);
 	
 	//load table lists
-		$.ajax({"/action/get_table"}
+		$.ajax({url:"/action/get_table",type:"GET"}
 		.done(function(response){
 			var result=JSON.parse(response);
 			var tableData=result.table;
@@ -71,8 +71,52 @@ $(document).ready(function(){
 	$("#table_tabmn").hide();
 	$("#menu_tabmn").show();
   });
+  
+  //shows the reservation form as the mouse enters "예약 추가"
+  $(".add_reservtion").mouseenter(function(){
+	 $(".reserve_form").css("display","flex"); 
+  });
+  
+  //add reservation by clicking the table element
+  $(".add_reservation").click(function(){
+	 if(($(".reservation_name"))&&($(".reservation_phone"))){
+		 var theDate=new date();
+		 $.ajax({URL:"",
+			 data:{
+				 name:.reservation_name;
+		 		 phone:.reservation_phone;
+		 		 reserveNum:;
+		 		 reserveTime:theDate;
+			 	},
+			 type:"POST"})
+			 .done(function(response){
+				 var result=JSON parse(response);
+				 if(!result.status){
+					 alert("예약에 실패했습니다! 잠시 후에 다시 시도해 주십시오.");
+				 }
+				 else{alert("예약되었습니다.")};
+			 }
+					 )
+	 }
+	 else{
+		 alert("이름과 번호를 모두 입력해 주세요.");
+	 }
+  });
 });
 
-/*not shown
+/*hiding codes
+function loadReservaionData(){
+	$.ajax({URL:"",type:"GET"}).done(response){
+		var result1=JSON parse(reseponse);
+		var reservationData=result1.reservation;
+	};
+}
 
+function loadMenuData(){
+	
+}
+
+function loadTableData(){
+	
+}
 */

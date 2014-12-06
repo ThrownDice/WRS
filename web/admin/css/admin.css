@@ -135,16 +135,59 @@ body{
 
 #container #contents .reservation .add_custom{
 	width:1000px;
-	text-align:right;
+	text-align:center;
+	padding-top:20px;
+}
+
+.reserve_data{
+	width:80%;
+}
+
+.reserve_form{
+	display:none;
+	justify-content:space-around;
+}
+
+.add_reservation{
+	width:20%;
+}
+
+.add_reservation:hover{
+    background-color: #141517;
+    color : #58BD2F;
 }
 
 .tab_menu_table{
-	width:1000px;
+	width:100%;
+	margin : 0px auto;
+    border : 1px solid #565A61;
+    border-collapse: collapse;
 }
 
 .reservation_table .header{
     border-bottom: 1px solid #565A61;
     color : #58BD2F;
+}
+
+#table_tabmn{
+	display:flex;
+	justify-content:space-around;
+	width:1000px;
+}
+
+#table_tabmn .table_image{
+	width:30%;
+}
+
+#table_tabmn .table_info{
+	width:70%;
+}
+
+#table_tabmn .table_info .table_info_table{
+	margin : 0px auto;
+    width : 100%;
+    border : 1px solid #565A61;
+    border-collapse: collapse;
 }
 
 /*end CSS for container*/
