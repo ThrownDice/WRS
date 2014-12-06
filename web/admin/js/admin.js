@@ -31,7 +31,7 @@
 	          newRow.append($('<td>' + node.phone + '</td>'));
 	          newRow.append($('<td>' + '메뉴' + '</td>'));
 	          newRow.append($('<td>' + '좌석' + '</td>'));
-	          newRow.append($('<td>' + '취소' + '</td>'));
+	          newRow.append($('<td class="cancel_reservation">' + '취소' + '</td>'));
 	  
 	          $('.reservation_table').append(newRow);
 	      };
@@ -165,7 +165,6 @@
 	      	 $(".reserve_form").css("display","flex"); 
 	        });
 	        
-	        /* 예약 추가
 	        //add reservation by clicking the table element
 	        $(".add_reservation").click(function(){
 	      	  var reservationName=$(".reservation_name").val();
@@ -191,7 +190,6 @@
 	      		 alert("이름과 번호를 모두 입력해 주세요.\n");
 	      	 }
 	        });
-	        */
 	        
 	              //시계 초기화
 	              setInterval(function(){

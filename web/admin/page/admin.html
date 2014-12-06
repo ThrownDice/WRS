@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title> WRS ADMIN </title>
 
+    <script src="../../common/js/jquery-2.1.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script src="../js/admin.js"></script>
+    
     <link rel="stylesheet" href="/web/common/css/normalize.css"/>
     <link rel="stylesheet" href="../css/admin.css"/>
     
-    <script src="../../common/js/jquery-2.1.1.min.js"></script>
-    <script src="../../common/js/common-1.js"></script>
-	<script src="../js/admin.js"></script>
-
 </head>
 <body>
 
@@ -25,12 +25,12 @@
 
             <div class="status">
 
-                <div class="time" id="timer">
-                    
+                <div class="time">
+                    &nbsp;
                 </div>
 
                 <div class="waiting">
-                    <span class="num"> 15 </span>
+                    <span class="num"> &nbsp </span>
                     명이 기다리고 있습니다
                 </div>
 
@@ -77,7 +77,7 @@
                             <th> 예약 좌석 </th>
                             <th> 예약 취소 </th>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td> 01 </td>
                             <td> 141116 20:36 </td>
                             <td> 강지현 </td>
@@ -85,7 +85,7 @@
                             <td class="reserved_menu"> 메뉴 </td>
                             <td class="reserved_table"> 좌석 </td>
                             <td> 취소 </td>
-                        </tr>
+                        </tr>-->
                     </table>
 					<table class="add_custom">
 						<tr>
