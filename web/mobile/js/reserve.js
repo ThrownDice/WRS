@@ -103,13 +103,10 @@
                         output += '         <p>' + item.price + '</p>';
                  //       output += '     </a>';
                         output += '</li>';
-                        $(output).appendTo('ul');
-                        $('ul').listview('refresh');
+                        $(output).appendTo('#menu_list');
+                        $('ul#menu_list').listview('refresh');
                     });
-
-                }    
-
-
+                }
             })
            
         });
@@ -122,12 +119,46 @@
             }).done(function(response){
 
                 var result = JSON.parse(response);
-                console.log(result);
+                if(result.status == 'ok') {
 
-                //테이블 데이터 리스트입니다
-                //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
-                var table = result.table;
+                    $.mobile.changePage('#page4', { transition: "slide"});
 
+                    socket.emit('onTableComplete', {});
+                    console.log(result);
+
+
+                    //테이블 데이터 리스트입니다
+                    //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
+                    var table = result.table;
+
+                    $.each(table, function (index, item) {
+
+                        var info = '';
+                        var i;
+                        i = index + 1;
+
+                        info += '<li id="' + (index + 1) + '">';
+                        info += '         <h3>' + item.capacity + '</h3>';
+                        info += '         <p>' + item.available + '</p>';
+                        info += '</li>';
+
+
+                        $(info).appendTo('#table_list');
+
+                        /*switch (i) {
+                            case 1 :
+                                $(info).appendTo('.big_a');
+                            case 2 :
+                                $(info).appendTo('.small_a');
+                            case 3 :
+                                $(info).appendTo('.big_b');
+                            case 4 :
+                                $(info).appendTo('.small_b');
+                            default :
+                        }*/
+                        $('ul#table_list').listview('refresh');
+                    });
+                }
             });
 
         });

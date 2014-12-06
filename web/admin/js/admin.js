@@ -107,16 +107,18 @@
                 $('.status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
             }, 1000);
 
-
+            $ ('#container .snb .menu').on('click', function(){
+                alert("hahaha");
+            });
 
         });
-
-
-
     });
 
 })();
 
+
+
+/*
 function loadMenu(){
 	$.ajax({"/action/get_menu"}
 		.done(function(response){
@@ -133,4 +135,4 @@ function loadMenu(){
 
 function loadTable(){
 	
-}
+}*/

@@ -75,7 +75,7 @@ setTimeout(function(){
         callback : function(data){
             tableData = data;
         }
-    })
+    });
 },1000);
 
 var app = http.createServer(function(request, response){
