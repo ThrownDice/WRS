@@ -11,6 +11,9 @@
  * @Dependencies jquery-2.1.1.min.js
  * @Dependencies socket.io.js
  */
+
+ var seatId = 0;
+
 (function(){
 
     //DON Load Completed
@@ -37,7 +40,6 @@
             }
 
         });
-
         socket.on('onChangeWaitCount', function(data){
 
             /**
@@ -67,15 +69,114 @@
             $('.lobby .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
         }, 1000);
 
+
+        //메뉴클릭
+        $('#menu_list').on('click', 'li', function() {
+
+
+            $.mobile.changePage('#page1');
+            $('#menu_list').empty();
+            //alert($(this).attr('id'));
+        });
+
         //Menu Button Event Handler
         $('.btn_menu').on('click', function(){
 
+            $.ajax({
+                url : '/action/get_menu'
+            }).done(function(response) {
+                var result = JSON.parse(response);
+                if(result.status == 'ok') {
+
+                    $.mobile.changePage('#page3', {transition: "slide"});
+
+                    socket.emit('onMenuComplete', {});
+                    console.log(result);
+
+                    var array = result.menu;
+
+                    $.each(array, function(index,item){
+
+                        var output = '';
+
+                        output += '<li id="'+(index+1)+'">';
+                 //            output += '     <a href="index.html">';
+                        output += '         <img src=../../menu/'+item.img +' />';
+                        output += '         <h3>'+ item.name +'</h3>';
+                        output += '         <p>' + item.price + '</p>';
+                 //       output += '     </a>';
+                        output += '</li>';
+                        $(output).appendTo('ul');
+                        $('ul').listview('refresh');
+                    });
+
+                }    
+
+
+            })
+           
         });
 
-        //Table Button Event Handler
-        $('.btn_menu').on('click', function(){
 
+        $('.btn_table').on('click', function(){
+
+            $('.table_wrap').empty();
+            seatId = 0;//저장된 값이 있을 경우 초기화.
+
+
+            $.ajax({
+                url : '/action/get_table'
+            }).done(function(response){
+
+                var result = JSON.parse(response);
+                if(result.status == 'ok') {
+
+                    $.mobile.changePage('#page4', { transition: "slide"});
+
+                    socket.emit('onTableComplete', {});
+                    console.log(result);
+
+                    //테이블 데이터 리스트입니다
+                    //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
+                    var array = result.table;
+                    $.each(array, function (index,item){
+                        
+                        if(this.available)
+                        {
+                            $('.table_wrap').append('<div class="table_node" id="user_table_' + this.id + '" seatId=' + this.id + '>'+ this.id +'번</div>');
+                            $('#user_table_' + this.id).css('background-color','green').addClass('table_available');
+                            $('#user_table_' + this.id).on('click', function() {
+                                seatId = $(this).attr('seatId');
+                                alert(seatId + '번 좌석이 선택되었습니다.');
+                                $(this).css('background-color', 'red').removeClass('table_available').addClass('table_not_available');
+                                setTimeout(function() { $.mobile.changePage('#page1'); }, 1000);
+                                
+                            });
+                            // $('.table_'+this.id+'').css('background-color','green').addClass('table_available');
+                        }
+                        else
+                        {
+                            $('.table_wrap').append('<div class="table_node" id="user_table_' + this.id + '">'+ this.id +'번</div>');
+                            $('#user_table_' + this.id).css('background-color','red').addClass('table_not_available');
+                            $('#user_table_' + this.id).on('click', function() {
+                                alert('이미 사용중인 자리입니다.');
+                            });
+                            // $('.table_'+this.id+'').css('background-color','red').addClass('table_not_available');
+                        }
+                    });
+                }
+            });
         });
+
+        // $('.table_node').live('click', function(){
+        //     if($(this).hasClass('table_available')){
+        //         alert($(this).children().children().value);
+        //         $.mobile.changePage('#page1');
+        //     }
+        //     else{
+        //         alert('이미 사용중인 자리입니다.');
+        //     }
+        // });
 
         //Reserve Button Event Handler
         $('.btn_reserve').on('click', function(){
@@ -85,7 +186,7 @@
 
             $.ajax({
                 url : '/action/reserve',
-                data : {name : name, phone : phone},
+                data : {name : name, phone : phone, id : seatId},
                 type : 'POST'
             }).done(function(response){
                 /**
@@ -104,12 +205,15 @@
                 //예약을 성공시
                 if(result.status == 'ok'){
 
-                    $('.reserve').animate({
-                        left : '-100%'
-                    }, 500);
-                    $('.lobby').animate({
-                        left : '-50%'
-                    });
+                    $.mobile.changePage('#page2');
+
+
+//                    $('.reserve').animate({
+//                        left : '-100%'
+//                    }, 500);
+//                    $('.lobby').animate({
+//                       left : '-50%'
+//                  });
 
                     //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
                     socket.emit('onReserveComplete', {});
