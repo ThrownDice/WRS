@@ -35,6 +35,9 @@
         newRow.append($('<td>' + '취소' + '</td>'));
 
         $('.reservation_table').append(newRow);
+
+
+        console.log(JSON.stringify(node));
     };
 
     //DON Load Completed
@@ -103,20 +106,20 @@
             });
 
             //시계 초기화
-            setInterval(function(){
+            /*setInterval(function(){
                 $('.status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
-            }, 1000);
-
-
+            }, 1000);*/
 
         });
-
-
-
     });
 
 })();
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8d57a93d8b2dc132205b471cae244d9fe006dc7d
 /*
 function loadMenu(){
 	$.ajax({"/action/get_menu"}

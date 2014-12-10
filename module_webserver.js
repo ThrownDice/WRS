@@ -50,14 +50,31 @@ var mimeTypes = {
 var waitCount = 0;
 var currentCustomer = 0;
 
+//menu data
+var menuData = {};
+
+//table data
+var tableData = {};
+
 //적절한 로직이 생각이 안나서 일단 이렇게 구현해둠.
 // (setTimeout을 사용하지 않고 바로 db로 접근을 시도하면 db가 아직 안열려 있을 경우에 대한
 // 예외처리를 할 수 가 없다. 그에 따른 해결책으로 콜백을 사용해야 하는데 복잡해짐 ㅡㅡ)
+// 여기에 최소 서버 가동시 DB에 오버헤드 계속 주긴 좀 그러니까 서버에서 menu, table 데이터를 스톡하게 해둠
 setTimeout(function(){
     adminModule.getReservationCount(function(count){
         //최초 예약 대기 번호 및 예약 대기 인원 초기화 (초기화는 db에 남아 있는 데이터 기준)
         waitCount = count;
         currentCustomer = count;
+    });
+    dbModule.collection_menu.read({
+        callback : function(data){
+            menuData = data;
+        }
+    });
+    dbModule.collection_table.read({
+        callback : function(data){
+            tableData = data;
+        }
     });
 },1000);
 
@@ -93,12 +110,12 @@ var app = http.createServer(function(request, response){
                         var reserveNum = waitCount + currentCustomer;   //손님의 대기 번호
                         var result = {};
 
-
                         dbModule.collection_reservation.create({
                             name : postDataObject.name,
                             phone : postDataObject.phone,
                             reserveNum : reserveNum,
-                            reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI')
+                            reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI'),
+                            reserveMenu : postDataObject.reserveMenu
                         });
 
                         //예약 성공 여부와 현재 예약 상황을 전송
@@ -106,7 +123,6 @@ var app = http.createServer(function(request, response){
                         result.currentCustomer = currentCustomer;
                         result.reserveNum = reserveNum;
 
-                        console.log('User Posted : ' + util.inspect(postDataObject));
                         response.end(JSON.stringify(result));
                     })
                 }else if(request.method == 'GET'){
@@ -114,14 +130,36 @@ var app = http.createServer(function(request, response){
                 }
             }
         },
-        {route : '/action/get_menu', doAction : function(data){
+        {route : '/action/get_menu', doAction : function(request, response){
                 //Get Menu Action
+                request.on('data', function(chunk) {
+                    //do something
+                }).on('end', function(){
 
+                    var result = {};
+                    result.status = 'ok';
+                    result.menu = menuData;
+
+                    console.log(util.inspect(result));
+                    response.end(JSON.stringify(result));
+
+                });
             }
         },
-        {route : '/action/get_table', doAction : function(data){
+        {route : '/action/get_table', doAction : function(request, response){
                 //Get Table Status Action
+                request.on('data', function(chunk){
+                    //do something
+                }).on('end', function(){
 
+                    var result ={};
+                    result.status = 'ok';
+                    result.table = tableData;
+
+                    console.log(util.inspect(result));
+                    response.end(JSON.stringify(result));
+
+                });
             }
         }
     ];
@@ -152,10 +190,18 @@ var app = http.createServer(function(request, response){
                     response.end(data);
                 });
                 return;
+            }else{
+                //3초 이상 끝나지 않을 경우 404에러를 보냄
+                /*setTimeout(function(){
+                    if(!response.finished){
+                        response.writeHead(404);
+                        response.end('Page Not Found!');
+                    }
+                }, 3000);*/
+                response.writeHead(404);
+                response.end('Page Not Found!');
             }
-            response.writeHead(404);
-            response.end('Page Not Found!');
-        })
+        });
     }
 
 });
