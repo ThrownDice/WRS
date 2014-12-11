@@ -16,6 +16,9 @@
     var socket;
     var adminCtl = {};
 
+    // 메뉴 저장해놓는 변수 kyk
+    var menu = [];
+
     /**
      * 예약 탭의 예약 정보 테이블의 데이터를 초기화한다
      */
@@ -29,13 +32,14 @@
      * @param node 예약정보 {JSONObject}
      */
     adminCtl.addReservationInfo = function(node){
+        console.log(node.reserveMenu);
         var newRow = $('<tr id="reservation_' + node.reserveNum + '">');
         newRow.append($('<td>' + node.reserveNum + '</td>'));
         newRow.append($('<td>' + node.reserveTime + '</td>'));
         newRow.append($('<td>' + node.name + '</td>'));
         newRow.append($('<td>' + node.phone + '</td>'));
-        newRow.append($('<td>' + '메뉴' + '</td>'));
-        newRow.append($('<td>' + '좌석' + '</td>'));
+        newRow.append($('<td class="reservation_table_menu" data-menu="">' + '메뉴' + '</td>'));
+        newRow.append($('<td class="reservation_table_seat" data-table="'+node.tableId+'">' + '좌석' + '</td>'));
         newRow.append($('<td class="btn_cancel" id="' + node.reserveNum + '">취소' + '</td>').on('click', function(){
                 console.log($(this).attr('id') + ' will be removed');
                 $.ajax({
@@ -44,43 +48,27 @@
                     data : {reserveNum : $(this).attr('id')}
                 }).done(function(response){
                     var result = JSON.parse(response);
-                    if(result.status == 'ok'){
-
-                        /**
-                         * 서버에서 예약 정보를 삭제한 후 보내오는 데이터는 다음과 같다
-                         *
-                         * @param   status  삭제 성공 여부    {String}
-                         * @param   reserveNum  삭제한 예약 번호   {Number}
-                         */
-
-                        //정상적으로 삭제된 후, 삭제된 예약 번호를 브로드 캐스팅 함
-                        socket.emit('onRemoveReservationSuccess', {reserveNum : result.reserveNum});
-
-                    }
                 });
 
             })
         );
-
+        menu.push(node.reserveMenu);
         $('.reservation_table').append(newRow);
-
-        /*$('.btn_cancel').on('click', function(){
-
-            console.log($(this).attr('id') + ' will be removed');
-
-            $.ajax({
-                url : '/action/remove_reservation',
-                type : 'POST',
-                data : {reserveNum : $(this).attr('id')}
-            }).done(function(response){
-
-                var result = JSON.parse(response);
-
-
-            });
-        });*/
-        //console.log(JSON.stringify(node));
     };
+
+    // 메뉴아이디를 이름으로 바꿔주는 함수 kyk
+    function changeMenuIdToName(id) {
+        if(id == 1)
+            return "새우튀김";
+        else if(id == 2)
+            return "보쌈";
+        else if(id == 3)
+            return "김치찌개";
+        else if(id == 4)
+            return "비빔밥";
+        else
+            return "냉면";
+    }
 
     $(function(){
 
@@ -141,27 +129,56 @@
             //데이터를 갱신하기 전에 테이블을 초기화
             adminCtl.clearReservationTable();
 
+            // 메뉴 어레이 초기화
+            menu = new Array();
+            console.log("init menu");
+
             //새롭게 받은 데이터로 갱신
             for(var i=0; i<length; i++){
                 adminCtl.addReservationInfo(reserveList[i]);
             }
 
-        });
+            
+            // 취소버튼 누를시 핸들러 kyk
+            $(".btn_cancel").click(function(){
+                var rowIndex = $(this).parent().index();
+                $(this).parent().remove();
+             // alert(menu[rowIndex-1].menuId);
+                menu.splice(rowIndex-1,1);
+            });
 
-        socket.on('onReservationRemove', function(data){
+            //메뉴 마우스 오버 kyk
+            $( ".reservation_table_menu" ).tooltip({
+                items: "[data-menu]",
+                content: function() {
+                    var rowIndex = $(this).parent().index();
+                    var menuTemp = menu[rowIndex-1];
+                    var menuParse = JSON.parse(menuTemp);
 
-            /**
-             * 삭제된 예약 정보가 전송되었을 경우 일어나는 이벤트.
-             * 서버로 부터 삭제된 예약 번호가 전송된다.
-             *
-             * @param   reserveNum  예약 번호   {Number}
-             */
+                    var output = new String();
 
-            console.log('onReservationRemove', data);
+                    $.each(menuParse, function(index,item) {
+                        output += "메뉴: " + changeMenuIdToName(this.menuId) + ", 수량: " + this.count + "<br>";
+                    });
 
-            var reserveNum = data.reserveNum;
+                    if(output == "")
+                        return "메뉴없음";
+                    else
+                        return output;
+                }
+            });
 
-            $('tr#reservation_' + reserveNum).remove();
+            //테이블
+            $(".reservation_table_seat").tooltip({
+                items: "[data-table]",
+                content: function() {
+                    if($(this).attr("data-table") == '0')
+                        return "테이블 예약 없음";
+                    else
+                        return "테이블 번호" + $(this).attr("data-table");
+                }
+            });
+
 
         });
 
@@ -273,5 +290,4 @@
             }
         });
     });
-
 })();
