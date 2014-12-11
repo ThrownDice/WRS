@@ -19,6 +19,9 @@ var adminModule = require('./module_admin');
 //max data size
 var maxData = 5 * 1024 * 1024; //5MB
 
+//socket clients
+var clients = new Array();
+
 //cache object
 var cache = {};
 function cacheAndDeliver(f, cb){
@@ -186,10 +189,15 @@ var app = http.createServer(function(request, response){
                         //decrease wait count
                         waitCount--;
 
+                        //대기 번호 증가
+                        currentCustomer++;
+
                         var postDataObject = querystring.parse(postData);
                         var result = {};
                         result.status = 'ok';
                         result.reserveNum = postDataObject.reserveNum;
+                        result.waitCount = waitCount;
+                        result.currentCustomer = currentCustomer;
 
                         //remove a reservation info
                         adminModule.removeReservation(postDataObject.reserveNum, function(result){
@@ -293,16 +301,37 @@ io.on('connection', function(socket){
     socket.on('onRemoveReservationSuccess', function(data){
 
         console.log('onRemoveReservationSuccess');
-        console.log(data);
         /**
          * 예약 정보가 삭제된 후 요청되는 이벤트
          * 다른 클라이언트들도 삭제된 예약 번호를 알 수 있도록 예약 번호를 브로드 캐스팅한다.
          *
-         * @param   reserveNum  삭제된 예약번호    {Number}
+         * @param   status  예약 삭제 성공 여부 {String}
+         * @param   reserveNum  예약 삭제 번호    {Number}
+         * @param   waitCount   갱신된 대기 인원   {Number}
+         * @param   currentCustomer 갱신된 대기 번호   {Number}
          */
-        socket.broadcast.emit('onReservationRemove', {reserveNum : data.reserveNum, waitCount: waitCount});
+        socket.broadcast.emit('onReservationRemove', data);
 
-        console.log('marker1');
+        //알람은 현재 대기 번호에서 3번째 뒤에 있는 클라이언트에게 전송
+        // (e.g. 1번 예약 번호가 삭제되어 현재 대기번호가 2가 되면 5번 대기번호의 클라이언트에게 알림을 줌)
+        if(clients[currentCustomer+3]){
+            console.log('push to ' + currentCustomer+3);
+            clients[currentCustomer+3].emit('onPush', {});
+        }
+
+    });
+
+    socket.on('addPushClient', function(data){
+
+        console.log('addPushClient');
+
+        /**
+         * 클라이언트가 대기 번호가 되었을 때 푸시 알람을 받기 위한 요청이 도착했을 때 발생하는 이벤트
+         *
+         * @param   reserveNum  클라이언트 대기 번호 {Number}
+         */
+
+        clients[data.reserveNum] = socket;
     });
 
 });

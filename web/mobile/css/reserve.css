@@ -171,6 +171,10 @@ input[type="checkbox"]{
     margin-top : 30px;
 }
 
+.dv_audio{
+    display : none;
+}
+
 /*footer 부분*/
 
 /*footer 부분*/
