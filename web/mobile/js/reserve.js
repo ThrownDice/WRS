@@ -39,6 +39,7 @@
             //연결에 성공하면 현재 예약 대기 인원을 갱신해줌
             if(data.status == 'success'){
                 $('.reserve .status .count').html(data.waitCount);
+                $('.reserve .status .expectedtime').html(data.waitCount*10);
             }
 
         });
@@ -53,6 +54,7 @@
 
             //현재 예약 대기 인원 갱신
             $('.reserve .status .count').html(data.waitCount);
+            $('.reserve .status .expectedtime').html(data.waitCount*10);
 
         });
 
@@ -70,6 +72,7 @@
 
               //현재 예약 대기 인원 갱신
             $('.reserve .status .count').html(data.waitCount);
+            $('.reserve .status .expectedtime').html(data.waitCount*10);
               //대기번호 갱신
             $('.waiting_count .count').html(data.currentCustomer);
 
