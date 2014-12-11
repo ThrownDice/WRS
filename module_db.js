@@ -37,9 +37,10 @@ exports.collection_reservation = {
                     tableId : data.tableId
                 }, function(err, result){
                     if(err){
-                        console.log('Can\'t insert data : ' + util.inspect(data));
+                        console.log(err);
+                        //console.log('Can\'t insert data : ' + util.inspect(data));
                     }else{
-                        console.log('Success to insert data : ' + util.inspect(data));
+                        //console.log('Success to insert data : ' + util.inspect(data));
                     }
                 });
             });
@@ -55,12 +56,12 @@ exports.collection_reservation = {
             collection.find(data).toArray(function (err, results) {
                 if (err) {
                     console.log(err);
-                    console.log('Can\'t find ' + util.inspect(data));
+                    //console.log('Can\'t find ' + util.inspect(data));
                 } else {
                     if(data){
-                        console.log('find ' + util.inspect(results));
+                        //console.log('find ' + util.inspect(results));
                     }else{
-                        console.log('find all reservation data');
+                        //console.log('find all reservation data');
                     }
                     data.callback(results);
                 }
@@ -82,9 +83,9 @@ exports.collection_reservation = {
             }, function(err, result){
                 if(err){
                     console.log(err);
-                    console.log('Can\t remove + ' + data.reserveNum + ' reservation.');
+                    //console.log('Can\t remove + ' + data.reserveNum + ' reservation.');
                 }else{
-                    console.log(data.reserveNum + ' record removed.');
+                    //console.log(data.reserveNum + ' record removed.');
                     data.callback(result);
                 }
             });

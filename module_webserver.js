@@ -303,6 +303,8 @@ io.on('connection', function(socket){
         if(clients[currentCustomer+3]){
             console.log('push to ' + currentCustomer+3);
             clients[currentCustomer+3].emit('onPush', {});
+        }else{
+            console.log('no client ' + currentCustomer+3);
         }
 
     });
@@ -313,6 +315,7 @@ io.on('connection', function(socket){
          *
          * @param   reserveNum  클라이언트 대기 번호 {Number}
          */
+        console.log('add push ' + data.reserveNum);
         clients[data.reserveNum] = socket;
     });
 

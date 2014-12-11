@@ -195,8 +195,6 @@
 
                 //예약을 성공시
                 if(result.status == 'ok'){
-
-
                     $.mobile.changePage('#page2');
 
                     // 메뉴 저장 어레이 초기화 kyk
@@ -205,8 +203,6 @@
 
                     //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
                     socket.emit('onReserveComplete', {});
-
-                    console.log(result);
 
                     //서버에서 전송 받은 예약 대기 현황을 찍어줌
                     $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
