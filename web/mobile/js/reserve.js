@@ -221,43 +221,69 @@
             var name = $('.input_name').val();
             var phone = $('.phone1').val()+$('.phone2').val()+$('.phone3').val();
 
-            $.ajax({
-                url : '/action/reserve',
-                data : {'name' : name, 'phone' : phone, 'reserveMenu' : JSON.stringify(reserveMenu), 'tableId' : seatId},
-                type : 'POST'
-            }).done(function(response){
-                /**
-                 * name(이름)과 phone(전화번호) 값을 data 파라미터로 하여
-                 * 서버로 예약 요청을 전송 한 후 서버의 응답을 response 데이터로
-                 * 전송됨.
-                 * response 객체에는 예약 요청 성공시 ok, 실패시 fail
-                 *
-                 * response
-                 * @param status ok 혹은 fail {String}
-                 * @param currentCustomer 현재 대기 번호  {Number}
-                 * @param reserveNum    예약신청한 손님의 대기번호  {Number}
-                 */
-                var result = JSON.parse(response);
+            //이름 확인
+            if(name.length < 1)
+            {
+                alert("이름을 입력해 주세요");
+                $(".input_name").focus();
+            }
+            //전화번호 확인
+            else if($('.phone1').val().length != 3)
+            {
+                alert("전화번호를 확인해 주세요")
+                $(".phone1").focus();
+            }
+            else if($('.phone2').val().length < 3)
+            {
+                alert("전화번호를 확인해 주세요")
+                $(".phone2").focus();
+            }
+            else if($('.phone3').val().length != 4)
+            {
+                alert("전화번호를 확인해 주세요")
+                $(".phone3").focus();
+            }
+            else{
+                //이름과 전화번호가 제대로 입력되었으면 예약완료시킴
+                $.ajax({
+                    url : '/action/reserve',
+                    data : {'name' : name, 'phone' : phone, 'reserveMenu' : JSON.stringify(reserveMenu), 'tableId' : seatId},
+                    type : 'POST'
+                }).done(function(response){
+                    /**
+                     * name(이름)과 phone(전화번호) 값을 data 파라미터로 하여
+                     * 서버로 예약 요청을 전송 한 후 서버의 응답을 response 데이터로
+                     * 전송됨.
+                     * response 객체에는 예약 요청 성공시 ok, 실패시 fail
+                     *
+                     * response
+                     * @param status ok 혹은 fail {String}
+                     * @param currentCustomer 현재 대기 번호  {Number}
+                     * @param reserveNum    예약신청한 손님의 대기번호  {Number}
+                     */
+                    var result = JSON.parse(response);
 
-                //예약을 성공시
-                if(result.status == 'ok'){
-                    $.mobile.changePage('#page2');
+                    //예약을 성공시
+                    if(result.status == 'ok'){
+                        $.mobile.changePage('#page2');
 
-                    // 메뉴 저장 어레이 초기화 kyk
-                    reserveMenu = new Array();
-                    seatId = 0;//저장된 값이 있을 경우 초기화
+                        // 메뉴 저장 어레이 초기화 kyk
+                        reserveMenu = new Array();
+                        seatId = 0;//저장된 값이 있을 경우 초기화
 
-                    //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
-                    socket.emit('onReserveComplete', {});
+                        //예약이 완료 되었음을 Socket.IO 서버로 전송 (갱신된 예약 대기 인원 브로드캐스팅을 위함)
+                        socket.emit('onReserveComplete', {});
 
-                    //서버에서 전송 받은 예약 대기 현황을 찍어줌
-                    $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
-                    $('.lobby .status .my_count .count').html(result.reserveNum); //나의 대기 번호
+                        //서버에서 전송 받은 예약 대기 현황을 찍어줌
+                        $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
+                        $('.lobby .status .my_count .count').html(result.reserveNum); //나의 대기 번호
 
-                    //대기 번호가 되었을 때 푸시 알람을 받기 위해 서버에 푸시 알람을 예약
-                    socket.emit('addPushClient', {reserveNum : result.reserveNum});
-                }
-            });
+                        //대기 번호가 되었을 때 푸시 알람을 받기 위해 서버에 푸시 알람을 예약
+                        socket.emit('addPushClient', {reserveNum : result.reserveNum});
+                    }
+                });
+            }
+
         });
     });
 
