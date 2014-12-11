@@ -64,91 +64,6 @@
 
         });
 
-        socket.on('onReservationRemove', function(data){
-
-            console.log('onReservationRemove');
-
-            /**
-             * 예약 정보가 삭제된 후 요청되는 이벤트
-             * 다른 클라이언트들도 삭제된 예약 번호를 알 수 있도록 예약 번호를 브로드 캐스팅한다.
-             *
-             * @param   status  예약 삭제 성공 여부 {String}
-             * @param   reserveNum  예약 삭제 번호    {Number}
-             * @param   waitCount   갱신된 대기 인원   {Number}
-             * @param   currentCustomer 갱신된 대기 번호   {Number}
-             */
-
-            //현재 예약 대기 인원 갱신
-            $('.reserve .status .count').html(data.waitCount);
-            //대기번호 갱신
-            $('.waiting_count .count').html(data.currentCustomer);
-
-        });
-
-        socket.on('onPush', function(data){
-
-            /**
-             * 현재 사용자의 대기 순번이 되어서 푸시 알람이 왔을 때 일어나는 이벤트
-             */
-
-            if (!"Notification" in window) {
-                //alert("This browser does not support desktop notification");
-            }else if (Notification.permission === "granted") {
-                var notification = new Notification("예약 순번이 되었습니다!");
-                //알람 소리를 재생
-                var audio = document.getElementById('alarm');
-                audio.play();
-            }
-
-        });
-
-        /*if(Notification.webkitRequestPermission){
-         alert("test");
-         }else if(Notification.requestPermission){
-             alert("test2");
-
-            Notification.requestPermission(function (permission) {
-                 if(!('permission' in Notification)) {
-                     alert("test3");
-                 Notification.permission = permission;
-                }
-             });
-         }*/
-        /*if("webkitNotifications" in window){
-            alert("ok");
-            var option = '';
-            for(var key in window.webkitNotifications){
-                option += key;
-                option += ' ';
-            }
-            alert(window.webkitNotifications.checkPermission());
-            if (window.webkitNotifications.checkPermission() == 0) {
-                window.webkitNotifications.createNotification(
-                    'test.png', 'Notification Title', 'content');
-            } else {
-                alert(window.webkitNotifications.requestPermission);
-                window.webkitNotifications.requestPermission(function(){});
-                alert("check");
-            }
-        }*/
-        /*var option = '';
-        for(var key in window){
-            option += key;
-            option += ' ';
-        }
-        alert(option);*/
-
-        //푸시 알람을 지원하기 위해서는 사용자의 허가가 있어야 함
-        if (!"Notification" in window) {
-            //지원 되지 않는 브라우저
-        }else if(Notification.permission !== 'granted'){
-            Notification.requestPermission(function (permission) {
-                if(!('permission' in Notification)) {
-                    Notification.permission = permission;
-                }
-            });
-        }
-
         /**
          * todo : 이거 시계 두 개 있는거 비효율적인거 같다. 하나로 통일 해야 하는데
          *        UI부분을 다시 디자인해야 해서 귀찮다
@@ -161,6 +76,28 @@
         setInterval(function(){
             $('.lobby .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
         }, 1000);
+
+        //메뉴클릭
+     //   $('#menu_list').on('click', 'li', function() {
+
+
+     //       $.mobile.changePage('#page1');
+     //       $('#menu_list').empty();
+     //       //alert($(this).attr('id'));
+     //   });
+
+        //전화번호 입력제한 kyk2
+        $(".input_phone").keyup(function(){ $(this).val($(this).val().replace(/[^0-9]/gi,"") );  });
+
+        //전화번호 오토 탭 kyk2
+        $( ".phone1" ).keyup(function() {
+            if($(this).val().length == 3)
+               $(".phone2").focus();
+        });
+        $( ".phone2" ).keyup(function() {
+            if($(this).val().length == 4)
+               $(".phone3").focus();
+        });
 
         //Menu Button Event Handler
         $('.btn_menu').on('click', function(){
@@ -265,7 +202,7 @@
         $('.btn_reserve').on('click', function(){
 
             var name = $('.input_name').val();
-            var phone = $('.input_phone').val();
+            var phone = $('.phone1').val()+$('.phone2').val()+$('.phone3').val();
 
             $.ajax({
                 url : '/action/reserve',
@@ -303,10 +240,6 @@
                     //서버에서 전송 받은 예약 대기 현황을 찍어줌
                     $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
                     $('.lobby .status .my_count .count').html(result.reserveNum); //나의 대기 번호
-
-                    //대기 번호가 되었을 때 푸시 알람을 받기 위해 서버에 푸시 알람을 예약
-                    socket.emit('addPushClient', {reserveNum : result.reserveNum});
-
                 }
             });
         });

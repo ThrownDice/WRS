@@ -48,24 +48,6 @@
                     data : {reserveNum : $(this).attr('id')}
                 }).done(function(response){
                     var result = JSON.parse(response);
-
-                    /**
-                     * 예약 삭제 성공 후 서버에서 응답으로 전송되는 데이터
-                     *
-                     * @param   status  예약 삭제 성공 여부 {String}
-                     * @param   reserveNum  예약 삭제 번호    {Number}
-                     * @param   waitCount   갱신된 대기 인원   {Number}
-                     * @param   currentCustomer 갱신된 대기 번호   {Number}
-                     */
-
-                    $('tr#reservation_'+result.reserveNum).remove();
-
-                    //대기 인원 갱신
-                    $('.status .waiting .num').html(result.waitCount);
-
-                    //성공적으로 예약 정보가 삭제 되었음을 브로드 캐스팅
-                    socket.emit('onRemoveReservationSuccess', result);
-
                 });
 
             })
@@ -158,12 +140,12 @@
 
             
             // 취소버튼 누를시 핸들러 kyk
-            /*$(".btn_cancel").click(function(){
+            $(".btn_cancel").click(function(){
                 var rowIndex = $(this).parent().index();
                 $(this).parent().remove();
              // alert(menu[rowIndex-1].menuId);
                 menu.splice(rowIndex-1,1);
-            });*/
+            });
 
             //메뉴 마우스 오버 kyk
             $( ".reservation_table_menu" ).tooltip({
@@ -267,7 +249,7 @@
             $(".reservation").show();
         });
 
-        /*$("#menu_table").mouseenter(function(){
+        $("#menu_table").mouseenter(function(){
             $(".reservation").hide();
             $("#menu_tabmn").hide();
             $("#table_tabmn").show();
@@ -277,7 +259,7 @@
             $(".reservation").hide();
             $("#table_tabmn").hide();
             $("#menu_tabmn").show();
-        });*/
+        });
 
         //shows the reservation form as the mouse enters "���� �߰�"
         $(".add_reservtion").mouseenter(function(){
@@ -285,27 +267,9 @@
         });
 
         //add reservation by clicking the table element
+        // 예약추가 버튼 누를시 새창으로 예약 페이지 이동 kyk2
         $(".add_reservation").click(function() {
-            var reservationName = $(".reservation_name").val();
-            var reservationPhone = $(".reservation_phone").val();
-            var reservationMenu = $(".select_menu").val();
-
-            if(reservationMenu!="menu_default"){
-                var menuCount=$(".select_menu_count").val();
-            }
-            if((reservationName)&&(reservationPhone)){
-                var theDate = new date();
-
-                var result=JSON.parse(response);
-
-                if(!result.status){
-                    alert("");
-                }else{
-                    alert("");
-                }
-            }else{
-                alert("");
-            }
+            window.open("../../mobile/page/reserve.html");
         });
     });
 })();
