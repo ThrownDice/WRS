@@ -44,9 +44,19 @@
                     data : {reserveNum : $(this).attr('id')}
                 }).done(function(response){
                     var result = JSON.parse(response);
+                    if(result.status == 'ok'){
 
+                        /**
+                         * 서버에서 예약 정보를 삭제한 후 보내오는 데이터는 다음과 같다
+                         *
+                         * @param   status  삭제 성공 여부    {String}
+                         * @param   reserveNum  삭제한 예약 번호   {Number}
+                         */
 
+                        //정상적으로 삭제된 후, 삭제된 예약 번호를 브로드 캐스팅 함
+                        socket.emit('onRemoveReservationSuccess', {reserveNum : result.reserveNum});
 
+                    }
                 });
 
             })
@@ -135,6 +145,23 @@
             for(var i=0; i<length; i++){
                 adminCtl.addReservationInfo(reserveList[i]);
             }
+
+        });
+
+        socket.on('onReservationRemove', function(data){
+
+            /**
+             * 삭제된 예약 정보가 전송되었을 경우 일어나는 이벤트.
+             * 서버로 부터 삭제된 예약 번호가 전송된다.
+             *
+             * @param   reserveNum  예약 번호   {Number}
+             */
+
+            console.log('onReservationRemove', data);
+
+            var reserveNum = data.reserveNum;
+
+            $('tr#reservation_' + reserveNum).remove();
 
         });
 

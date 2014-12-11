@@ -189,11 +189,12 @@ var app = http.createServer(function(request, response){
                         var postDataObject = querystring.parse(postData);
                         var result = {};
                         result.status = 'ok';
+                        result.reserveNum = postDataObject.reserveNum;
 
                         //remove a reservation info
                         adminModule.removeReservation(postDataObject.reserveNum, function(result){
                             if(result){
-                                console.log('remove a reservation success.');
+                                console.log('Successfully removed reservation info.');
                             }
                         });
 
@@ -275,19 +276,6 @@ io.on('connection', function(socket){
 
     });
 
-    socket.on('onRemoveReservation', function(data){
-
-        console.log('onRemoveReservation');
-
-        /**
-         * 예약 정보가 삭제된 후 예약 대기 수의 변경이 생겼을 때 일어나는 이벤트
-         * 갱신된 현재 예약 대기 인원을 브로드 캐스팅한다.
-         * (data는 empty)
-         */
-        socket.broadcast.emit('onChangeWaitCount', {waitCount : waitCount});
-
-    });
-
     socket.on('getReservationInfo', function(data){
 
         /**
@@ -300,6 +288,21 @@ io.on('connection', function(socket){
             socket.emit('onReservationInfo', {reserveList : data});
         });
 
+    });
+
+    socket.on('onRemoveReservationSuccess', function(data){
+
+        console.log('onRemoveReservationSuccess');
+        console.log(data);
+        /**
+         * 예약 정보가 삭제된 후 요청되는 이벤트
+         * 다른 클라이언트들도 삭제된 예약 번호를 알 수 있도록 예약 번호를 브로드 캐스팅한다.
+         *
+         * @param   reserveNum  삭제된 예약번호    {Number}
+         */
+        socket.broadcast.emit('onReservationRemove', {reserveNum : data.reserveNum, waitCount: waitCount});
+
+        console.log('marker1');
     });
 
 });
