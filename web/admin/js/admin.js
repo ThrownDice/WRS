@@ -198,15 +198,18 @@
             var len = menuData.length;
 
             for(var i=0; i<len; i++){
-                var newData=$(".menu_info_table").append("<tr>");
-                newData.append($("<td>"+menuData[i].id+"</td>"));
-                newData.append($("<td>"+menuData[i].name+"</td>"));
-                newData.append($("<td>"+menuData[i].price+"��</td>"));
-                newData.append($("<td><span><img src=/menu/"+menuData[i].img+"></span></td></tr>"));
 
-                var newOption=$(".select_menu").append("<option>");
-                newOption.append($(menuData[i].name));
-                newOption.attr("val",menuData[i].id);
+                var menu = menuData[i];
+                var newRow = $('<tr id="menu_' + menu.id + '">');
+                newRow.append($('<td>' + menu.id + '</td>'));
+                newRow.append($('<td>' + menu.name + '</td>'));
+                newRow.append($('<td>' + menu.price + '</td>'));
+                /*newRow.append($('<td> <img width="100" height="100" src="../../menu/' + menu.img + '"/> </td>'));*/
+
+                console.log(menu);
+
+                $('.menu_info_table').append(newRow);
+
             }
         });
 
@@ -237,31 +240,22 @@
 
         //shows reservation status and hides .tab_menu
         $(".contents").show();
-        $("#table_tabmn").hide();
         $("#menu_tabmn").hide();
 
         /*if mouse enters each divisions,
          each content appears, as the content that has been shown before changing menu disappears.
          */
         $("#menu_reserve").mouseenter(function(){
-            $("#table_tabmn").hide();
             $("#menu_tabmn").hide();
             $(".reservation").show();
         });
 
-        $("#menu_table").mouseenter(function(){
-            $(".reservation").hide();
-            $("#menu_tabmn").hide();
-            $("#table_tabmn").show();
-        });
-
         $("#menu_menu").mouseenter(function(){
             $(".reservation").hide();
-            $("#table_tabmn").hide();
             $("#menu_tabmn").show();
         });
 
-        //shows the reservation form as the mouse enters "���� �߰�"
+        //shows the reservation form as the mouse enters add_reservation
         $(".add_reservtion").mouseenter(function(){
             $(".reserve_form").css("display","flex");
         });

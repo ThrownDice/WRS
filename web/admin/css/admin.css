@@ -162,6 +162,12 @@ body{
 	margin : 0px auto;
     border : 1px solid #565A61;
     border-collapse: collapse;
+    text-align: center;
+}
+
+.menu_info_table .header{
+    border-bottom: 1px solid #565A61;
+    color : #58BD2F;
 }
 
 .reservation_table .header{
