@@ -182,6 +182,11 @@ input[type="checkbox"]{
     margin-top : 30px;
 }
 
+.push_info{
+    color : red;
+    font-weight: bold;
+}
+
 /*footer 부분*/
 
 /*footer 부분*/
