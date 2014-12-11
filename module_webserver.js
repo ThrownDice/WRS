@@ -115,7 +115,8 @@ var app = http.createServer(function(request, response){
                             phone : postDataObject.phone,
                             reserveNum : reserveNum,
                             reserveTime : new Date().toFormat('YYYY.MM.DD HH24:MI'),
-                            reserveMenu : postDataObject.reserveMenu
+                            reserveMenu : postDataObject.reserveMenu,
+                            tableId : postDataObject.tableId
                         });
 
                         //예약 성공 여부와 현재 예약 상황을 전송
@@ -160,6 +161,46 @@ var app = http.createServer(function(request, response){
                     response.end(JSON.stringify(result));
 
                 });
+            }
+        },
+        {route: '/action/remove_reservation', doAction: function (request, response) {
+                //Get Reservation Id
+                if(request.method === 'POST'){
+                    var postData = '';
+                    request.on('data', function(chunk){
+                        postData += chunk;
+                        if(postData.length > maxData){
+                            postData = '';
+                            this.pause();
+                            response.writeHead(413);    //Request Entity Too Large
+                            response.end('Too large');
+                        }
+                    }).on('end', function(){
+
+                        //if there is no data.
+                        if(!postData){
+                            response.end();
+                            return;
+                        }
+
+                        //decrease wait count
+                        waitCount--;
+
+                        var postDataObject = querystring.parse(postData);
+                        var result = {};
+                        result.status = 'ok';
+
+                        //remove a reservation info
+                        adminModule.removeReservation(postDataObject.reserveNum, function(result){
+                            if(result){
+                                console.log('remove a reservation success.');
+                            }
+                        });
+
+                        response.end(JSON.stringify(result));
+
+                    });
+                }
             }
         }
     ];
@@ -227,6 +268,19 @@ io.on('connection', function(socket){
 
         /**
          * 예약 신청이 완료 된 후 예약 대기 수의 변경이 생겼을 때 일어나는 이벤트
+         * 갱신된 현재 예약 대기 인원을 브로드 캐스팅한다.
+         * (data는 empty)
+         */
+        socket.broadcast.emit('onChangeWaitCount', {waitCount : waitCount});
+
+    });
+
+    socket.on('onRemoveReservation', function(data){
+
+        console.log('onRemoveReservation');
+
+        /**
+         * 예약 정보가 삭제된 후 예약 대기 수의 변경이 생겼을 때 일어나는 이벤트
          * 갱신된 현재 예약 대기 인원을 브로드 캐스팅한다.
          * (data는 empty)
          */

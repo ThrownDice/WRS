@@ -73,9 +73,24 @@ exports.collection_reservation = {
     update : function(data){
 
     },
-    //delete reservation document
+    /**
+     * remove data in reservation collection
+     * @param data  {JSONObject}
+     */
     remove : function(data){
-
+        db.collection('reservation', function(err, collection){
+            collection.remove({
+                reserveNum : Number(data.reserveNum)
+            }, function(err, result){
+                if(err){
+                    console.log(err);
+                    console.log('Can\t remove + ' + data.reserveNum + ' reservation.');
+                }else{
+                    console.log(data.reserveNum + ' record removed.');
+                    data.callback(result);
+                }
+            });
+        });
     },
     /**
      * get reservation info count

@@ -11,6 +11,9 @@
  * @Dependencies jquery-2.1.1.min.js
  * @Dependencies socket.io.js
  */
+
+ var seatId = 0;
+
 (function(){
 
     //DON Load Completed
@@ -74,18 +77,25 @@
             $('.lobby .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
         }, 1000);
 
+        //메뉴클릭
+        $('#menu_list').on('click', 'li', function() {
 
-        // 메뉴버튼 클릭 핸들러
+
+            $.mobile.changePage('#page1');
+            $('#menu_list').empty();
+            //alert($(this).attr('id'));
+        });
+
+        //Menu Button Event Handler
         $('.btn_menu').on('click', function(){
 
-            reserveMenu = new Array();
             $.ajax({
                 url : '/action/get_menu'
             }).done(function(response) {
                 var result = JSON.parse(response);
                 if(result.status == 'ok') {
 
-                    $.mobile.changePage('#pagemenu');
+                    $.mobile.changePage('#pagemenu', {transition: "slide"});
 
                     socket.emit('onMenuComplete', {});
                     console.log(result);
@@ -95,7 +105,6 @@
                     $.each(array, function(index,item){
 
                         var output = '';
-
                         output += '<li data-theme="a" id="'+this.id+'" >';
                         output += '     <img src=../../menu/'+this.img +' />';
                         output += '     <h3 class="m_name">'+ this.name +'</h3>';
@@ -111,12 +120,13 @@
                         output += '     </select>';
                         output += '     </div>';
                         output += '</li>'
-                        $(output).appendTo('ul');               
+                        $(output).appendTo('ul#menu_list');
                     });
-                     $('ul').listview('refresh');
+                     $('ul#menu_list').listview('refresh');
                 }
             })
         });
+
         // 메뉴페이지에서 선택완료 버튼 클릭 핸들러
         $('.btn_choice').on('click', function(){
             $('#pagemenu .ui-content li').each(function (index,item){
@@ -130,8 +140,10 @@
             $('#menu_list').empty();
         });
 
-        //Table Button Event Handler
         $('.btn_table').on('click', function(){
+
+            $('.table_wrap').empty();
+            seatId = 0;//저장된 값이 있을 경우 초기화.
 
             $.ajax({
                 url : '/action/get_table'
@@ -149,22 +161,32 @@
                     //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
                     var array = result.table;
                     $.each(array, function (index,item){
+
                         if(this.available)
                         {
-                            $('.table_'+this.id+'').css('background-color','green').addClass('table_available');
+                            $('.table_wrap').append('<div class="table_node" id="user_table_' + this.id + '" seatId=' + this.id + '>'+ this.id +'번</div>');
+                            $('#user_table_' + this.id).css('background-color','green').addClass('table_available');
+                            $('#user_table_' + this.id).on('click', function() {
+                                seatId = $(this).attr('seatId');
+                                alert(seatId + '번 좌석이 선택되었습니다.');
+                                $(this).css('background-color', 'red').removeClass('table_available').addClass('table_not_available');
+                                setTimeout(function() { $.mobile.changePage('#page1'); }, 1000);
+                                
+                            });
+                            // $('.table_'+this.id+'').css('background-color','green').addClass('table_available');
                         }
                         else
                         {
-                            $('.table_'+this.id+'').css('background-color','red').addClass('table_not_available');
+                            $('.table_wrap').append('<div class="table_node" id="user_table_' + this.id + '">'+ this.id +'번</div>');
+                            $('#user_table_' + this.id).css('background-color','red').addClass('table_not_available');
+                            $('#user_table_' + this.id).on('click', function() {
+                                alert('이미 사용중인 자리입니다.');
+                            });
+                            // $('.table_'+this.id+'').css('background-color','red').addClass('table_not_available');
                         }
                     });
                 }
             });
-        });
-
-        $('.table_node').on('click', function(){
-            if($(this).hasClass('table_available'))
-                alert($(this).attr("value"));
         });
 
         //Reserve Button Event Handler
@@ -175,7 +197,7 @@
 
             $.ajax({
                 url : '/action/reserve',
-                data : {'name' : name, 'phone' : phone, 'reserveMenu' : JSON.stringify(reserveMenu)},
+                data : {'name' : name, 'phone' : phone, 'reserveMenu' : JSON.stringify(reserveMenu), 'tableId' : seatId},
                 type : 'POST'
             }).done(function(response){
                 /**
@@ -204,14 +226,9 @@
                     //서버에서 전송 받은 예약 대기 현황을 찍어줌
                     $('.lobby .status .waiting_count .count').html(result.currentCustomer); //현재 대기 번호
                     $('.lobby .status .my_count .count').html(result.reserveNum); //나의 대기 번호
-
                 }
             });
-
         });
-
     });
-
-
 
 })();

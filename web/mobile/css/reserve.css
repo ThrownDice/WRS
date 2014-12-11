@@ -163,50 +163,14 @@ input[type="checkbox"]{
     border-radius : 5px;
     border : 1px solid gray;
     background : lightgray;
-    position: absolute;
+    /*position: absolute;*/
     display : inline-block;
-}
-
-.table_1{
     width : 80px;
     height : 160px;
     margin-left : 3%;
     margin-top : 30px;
 }
 
-.table_2{
-    width : 80px;
-    height : 80px;
-    margin-left : 3%;
-    margin-top : 250px;
-}
-
-.table_3{
-    width : 160px;
-    height : 80px;
-    margin-left : 40%;
-    margin-top : 30px;
-}
-
-.table_4{
-    width : 80px;
-    height : 80px;
-    margin-left : 40%;
-    margin-top : 250px;
-}
-
-.table_capa{
-    margin : 0px auto;
-    width : 95%;
-    height: 100px;
-    background : white;
-    border-radius : 5px;
-    border : 1px solid gray;
-}
-
-
 /*footer 부분*/
-
-
 
 /*footer 부분*/

@@ -22,3 +22,11 @@ exports.getReservationInfo = function(callback){
 exports.getReservationCount = function(callback){
     dbModule.collection_reservation.count({callback : callback});
 }
+/**
+ * remove a reservation record
+ * @param id    reserveNum  {Number}
+ * @param callback  {function}
+ */
+exports.removeReservation = function(reserveNum, callback){
+    dbModule.collection_reservation.remove({reserveNum : reserveNum, callback : callback});
+}
