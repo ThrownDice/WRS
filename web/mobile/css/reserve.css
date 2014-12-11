@@ -11,9 +11,6 @@ body{
     margin : 0px;
     padding : 0px;
     background: url('../img/mobile_bg.png') repeat;
-    /*background-repeat:repeat-y;
-    background-position:center center;
-    background-attachment:scroll;*/
     background-size:100% 100%;
     font-family: 'Nanum Gothic', serif;
     overflow: hidden;

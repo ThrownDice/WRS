@@ -1,15 +1,11 @@
 /**
- * Created by TD on 2014-12-07.
- */
-/**
  * admin.js
  *
  * script for admin page
  *
- * @author KANG JI HYEON (kiwlgus1@korea.ac.kr)
  * @Dependencies jquery-2.1.1.min.js
+ * @Dependencies jquery-ui.min.js
  * @Dependencies socket.io.js
- *
  */
 (function(){
 
@@ -212,31 +208,6 @@
 
             }
         });
-
-        //load table lists
-        /*$.ajax({
-            url:'/action/get_table',
-            type:'GET'
-        }).done(function(response){
-
-            var result=JSON.parse(response);
-            var tableData=result.table;
-            var len = tableData.length;
-
-            for(var i=0; i<len; i++) {
-
-                var newData=$(".table_info_table").append("<tr>");
-                newData.append($("<td>"+tableData[i].id+"</td>"));
-                newData.append($("<td>"+tableData[i].capacity+"</td>"));
-                newData.append($("<td>"+tableData[i].available+"</td></tr>"));
-
-                if(tableData[i].available) {
-                    var newOption=$(".select_table").append("<option>");
-                    newOption.append($(tableData[i].id));
-                    newOption.attr("val",tableData[i].id);
-                }
-            }
-        });*/
 
         //shows reservation status and hides .tab_menu
         $(".contents").show();

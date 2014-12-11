@@ -1,14 +1,10 @@
 /**
- * Created by TD on 2014-11-16.
- */
-/**
  * reserve.js
  *
  * script for mobile page
  *
- * @author KANG JI HYEON (kiwlgus1@korea.ac.kr)
- * @Dependencies jquery.mobile-1.4.5.min.js
  * @Dependencies jquery-2.1.1.min.js
+ * @Dependencies jquery.mobile-1.4.5.min.js
  * @Dependencies socket.io.js
  */
 
@@ -64,10 +60,6 @@
 
         });
 
-        /**
-         * todo : 이거 시계 두 개 있는거 비효율적인거 같다. 하나로 통일 해야 하는데
-         *        UI부분을 다시 디자인해야 해서 귀찮다
-         */
         //예약 시계 초기화
         setInterval(function(){
             $('.reserve .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
@@ -76,15 +68,6 @@
         setInterval(function(){
             $('.lobby .status .time').html(new Date().format("yyyy-MM-dd E  hh:mm:ss"));
         }, 1000);
-
-        //메뉴클릭
-     //   $('#menu_list').on('click', 'li', function() {
-
-
-     //       $.mobile.changePage('#page1');
-     //       $('#menu_list').empty();
-     //       //alert($(this).attr('id'));
-     //   });
 
         //전화번호 입력제한 kyk2
         $(".input_phone").keyup(function(){ $(this).val($(this).val().replace(/[^0-9]/gi,"") );  });
@@ -170,7 +153,6 @@
                     console.log(result);
 
                     //테이블 데이터 리스트입니다
-                    //todo : table 데이터를 이용하여 유저에게 테이블들을 보여주고 테이블들을 선택할 수 있게 해야 합니다.
                     var array = result.table;
                     $.each(array, function (index,item){
                         
@@ -182,17 +164,6 @@
                             $(this).css('background-color', 'red').removeClass('table_available').addClass('table_not_available');
                             setTimeout(function() { $.mobile.changePage('#page1'); }, 1000);       
                         });
-                            // $('.table_'+this.id+'').css('background-color','green').addClass('table_available');
-                        
-                        //else
-                       // {
-                       //     $('.table_wrap').append('<div class="table_node" id="user_table_' + this.id + '">'+ this.id +'번</div>');
-                      //      $('#user_table_' + this.id).css('background-color','red').addClass('table_not_available');
-                      //      $('#user_table_' + this.id).on('click', function() {
-                      //          alert('이미 사용중인 자리입니다.');
-                      //      });
-                            // $('.table_'+this.id+'').css('background-color','red').addClass('table_not_available');
-                      //  }
                     });
                 }
             });

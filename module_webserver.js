@@ -59,10 +59,7 @@ var menuData = {};
 //table data
 var tableData = {};
 
-//적절한 로직이 생각이 안나서 일단 이렇게 구현해둠.
-// (setTimeout을 사용하지 않고 바로 db로 접근을 시도하면 db가 아직 안열려 있을 경우에 대한
-// 예외처리를 할 수 가 없다. 그에 따른 해결책으로 콜백을 사용해야 하는데 복잡해짐 ㅡㅡ)
-// 여기에 최소 서버 가동시 DB에 오버헤드 계속 주긴 좀 그러니까 서버에서 menu, table 데이터를 스톡하게 해둠
+// db가 열리기를 기다린 후 menu, table 데이터를 db에서 불러와 서버에 저장해둔다.
 setTimeout(function(){
     adminModule.getReservationCount(function(count){
         //최초 예약 대기 번호 및 예약 대기 인원 초기화 (초기화는 db에 남아 있는 데이터 기준)
@@ -87,6 +84,7 @@ var app = http.createServer(function(request, response){
     console.log(url + ' is requested.');
 
     var actions = [
+        // /action/reserve URL이 요청되면 예약 데이터를 받은 후 db저장하게 된다
         {route : '/action/reserve', doAction : function(request, response){
                 //Reserve Action
                 if(request.method === 'POST'){
@@ -134,6 +132,7 @@ var app = http.createServer(function(request, response){
                 }
             }
         },
+        // /action/get_menu URL이 요청되면 서버에 저장해둔 메뉴 데이터들을 전송해준다
         {route : '/action/get_menu', doAction : function(request, response){
                 //Get Menu Action
                 request.on('data', function(chunk) {
@@ -150,6 +149,7 @@ var app = http.createServer(function(request, response){
                 });
             }
         },
+        // /action/get_table URL이 요청되면 서버에 저장해둔 테이블 데이터들을 전송해준다
         {route : '/action/get_table', doAction : function(request, response){
                 //Get Table Status Action
                 request.on('data', function(chunk){
@@ -166,6 +166,7 @@ var app = http.createServer(function(request, response){
                 });
             }
         },
+        // /action/remove_reservation URL이 요청되면 요청된 예약번호에 대해서 예약 정보를 삭제한다
         {route: '/action/remove_reservation', doAction: function (request, response) {
                 //Get Reservation Id
                 if(request.method === 'POST'){
@@ -205,15 +206,14 @@ var app = http.createServer(function(request, response){
                                 console.log('Successfully removed reservation info.');
                             }
                         });
-
                         response.end(JSON.stringify(result));
-
                     });
                 }
             }
         }
     ];
 
+    //요청된 URL에 따라서 route한 후 해당 action을 실행한다
     actions.forEach(function(action){
         if(action.route === url){
             action.doAction(request, response);
@@ -241,13 +241,6 @@ var app = http.createServer(function(request, response){
                 });
                 return;
             }else{
-                //3초 이상 끝나지 않을 경우 404에러를 보냄
-                /*setTimeout(function(){
-                    if(!response.finished){
-                        response.writeHead(404);
-                        response.end('Page Not Found!');
-                    }
-                }, 3000);*/
                 response.writeHead(404);
                 response.end('Page Not Found!');
             }
@@ -272,9 +265,6 @@ io.on('connection', function(socket){
     socket.emit('onConnect', {status:'success', waitCount : waitCount});
 
     socket.on('onReserveComplete', function(data){
-
-        console.log('onReserveComplete');
-
         /**
          * 예약 신청이 완료 된 후 예약 대기 수의 변경이 생겼을 때 일어나는 이벤트
          * 갱신된 현재 예약 대기 인원을 브로드 캐스팅한다.
@@ -285,13 +275,11 @@ io.on('connection', function(socket){
     });
 
     socket.on('getReservationInfo', function(data){
-
         /**
          * 관리자 페이지에서 예약 대기 인원이 갱신되었을 때 요청되는 이벤트
          * 예약 정보를 다시 관리자에게 보내준다.
          * (data는 empty)
          */
-
         adminModule.getReservationInfo(function(data){
             socket.emit('onReservationInfo', {reserveList : data});
         });
@@ -299,8 +287,6 @@ io.on('connection', function(socket){
     });
 
     socket.on('onRemoveReservationSuccess', function(data){
-
-        console.log('onRemoveReservationSuccess');
         /**
          * 예약 정보가 삭제된 후 요청되는 이벤트
          * 다른 클라이언트들도 삭제된 예약 번호를 알 수 있도록 예약 번호를 브로드 캐스팅한다.
@@ -322,15 +308,11 @@ io.on('connection', function(socket){
     });
 
     socket.on('addPushClient', function(data){
-
-        console.log('addPushClient');
-
         /**
          * 클라이언트가 대기 번호가 되었을 때 푸시 알람을 받기 위한 요청이 도착했을 때 발생하는 이벤트
          *
          * @param   reserveNum  클라이언트 대기 번호 {Number}
          */
-
         clients[data.reserveNum] = socket;
     });
 
