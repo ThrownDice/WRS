@@ -143,7 +143,6 @@ var app = http.createServer(function(request, response){
                     result.status = 'ok';
                     result.menu = menuData;
 
-                    console.log(util.inspect(result));
                     response.end(JSON.stringify(result));
 
                 });
@@ -160,7 +159,6 @@ var app = http.createServer(function(request, response){
                     result.status = 'ok';
                     result.table = tableData;
 
-                    console.log(util.inspect(result));
                     response.end(JSON.stringify(result));
 
                 });
@@ -187,7 +185,7 @@ var app = http.createServer(function(request, response){
                             return;
                         }
 
-                        //decrease wait count
+                        //대기 인원 감소
                         waitCount--;
 
                         //대기 번호 증가
@@ -203,7 +201,7 @@ var app = http.createServer(function(request, response){
                         //remove a reservation info
                         adminModule.removeReservation(postDataObject.reserveNum, function(result){
                             if(result){
-                                console.log('Successfully removed reservation info.');
+                                //console.log('Successfully removed reservation info.');
                             }
                         });
                         response.end(JSON.stringify(result));
