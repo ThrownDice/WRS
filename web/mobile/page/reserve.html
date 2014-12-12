@@ -24,8 +24,7 @@
 
     <div data-role="page" id="page1">
         <div data-role="header">
-            <h1>Page 1</h1>
-            <a href="#" class="btn_bars ui-btn ui-btn-a ui-icon-bars ui-btn-icon-notext ui-corner-all"></a>
+            <h1>Reservation</h1>
         </div>
         <div role="main" class="ui-content">
 
@@ -60,8 +59,16 @@
                     </div>
                     <div class="form_phone">
                         <div class="tag"> 전화번호 </div>
-                        <div class="contents">
-                            <input type="text" class="input_phone"/>
+                        <div class="contents" >
+                            <input type="text" class="input_phone phone1" maxlength="3"/>
+                        </div>
+                        <div class="hypon">-</div>
+                        <div class="contents" >
+                            <input type="text" class="input_phone phone2" maxlength="4"/>
+                        </div>
+                        <div class="hypon">-</div>
+                        <div class="contents" >
+                            <input type="text" class="input_phone phone3" maxlength="4"/>
                         </div>
                     </div>
                 </div> 
@@ -75,7 +82,7 @@
     </div>
     <div data-role="page" id="page2">
         <div data-role="header">
-            <h1>Page 2</h1>
+            <h1>Reservation</h1>
         </div>
         <div role="main" class="ui-content">
 
@@ -91,33 +98,47 @@
                     <div class="my_count">
                         나의 대기 번호 : <span class="count"> &nbsp; </span>
                     </div>
+                    <div class="push_info">
+                        대기 번호에 가까워 지시면 알람을 드립니다!
+                        탭을 닫지마세요!
+                    </div>
                 </div>
 
             </div>
-            <a href="#page1" data-rel="back" data-transition="slide" class="ui-btn ui-corner-all ui-btn-inline">Go Back To Page 1</a>
         </div>
     </div>    
 
-    <div data-role="page" id="page3">
+    <div data-role="page" id="pagemenu">
         <div data-role="header">
             <h1>Menu</h1>
         </div>
         <div role="main" class="ui-content">
-           
-        <ul data-role="listview" id="menu_list">
+            <ul data-role="listview" id="menu_list" data-inset="true"data-split-theme="a">
             
-        </ul>
-
+            </ul>
+            <div class="btn_choice btn"> 선택완료 </div>
 
         </div>
+    </div>
+    <div data-role="page" id="page4">
+        <div data-role="header">
+            <h1>Table</h1>
+        </div>
 
+        <div role="main" class="ui-content">
+
+            <div class="table_wrap">
+                
+            </div>
+
+        </div>
     </div>
 
+    <div class="dv_audio">
+        <audio controls id="alarm">
+            <source src="../../etc/alarm.mp3" type="audio/mpeg">
+        </audio>
     </div>
-
-
-
-    
 
 </body>
 </html>

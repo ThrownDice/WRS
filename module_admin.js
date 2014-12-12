@@ -1,7 +1,4 @@
 /**
- * Created by TD on 2014-11-19.
- */
-/**
  * Admin Module
  * This is a Admin Module
  */
@@ -21,4 +18,12 @@ exports.getReservationInfo = function(callback){
  */
 exports.getReservationCount = function(callback){
     dbModule.collection_reservation.count({callback : callback});
+}
+/**
+ * remove a reservation record
+ * @param id    reserveNum  {Number}
+ * @param callback  {function}
+ */
+exports.removeReservation = function(reserveNum, callback){
+    dbModule.collection_reservation.remove({reserveNum : reserveNum, callback : callback});
 }

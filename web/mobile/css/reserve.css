@@ -11,9 +11,6 @@ body{
     margin : 0px;
     padding : 0px;
     background: url('../img/mobile_bg.png') repeat;
-    /*background-repeat:repeat-y;
-    background-position:center center;
-    background-attachment:scroll;*/
     background-size:100% 100%;
     font-family: 'Nanum Gothic', serif;
     overflow: hidden;
@@ -105,6 +102,20 @@ body{
     width : 65%;
 }
 
+/* 전화번호나누기 kyk */
+.form .form_phone .contents {
+    text-align: center;
+    float : left;
+    width : 19%;
+}
+
+.form .form_phone .hypon {
+    text-align: center;
+    float : left;
+    width : 4%;
+}
+/* 여기까지 */
+
 .form input{
     height : 20px;
     width : 100%;
@@ -125,6 +136,61 @@ body{
     background : url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2YzZjNmMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUxJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 }
 
+.m_count{
+    position: absolute; 
+    left: 70%; 
+    top: 38%;
+}
 
+img{
+    width: 80px !important;
+    height: 80px !important;
+}
+
+input[type="checkbox"]{
+    position: absolute; 
+    left: 60%; 
+    top: 40%;
+    width: 18px;
+    height: 18px;
+}
+
+
+#menu_list{
+    margin : 0px auto;
+    width : 95%;
+}
+
+.table_wrap{
+    margin : 0px auto;
+    width : 95%;
+    height: 450px;
+    background : white;
+    border-radius : 5px;
+    border : 1px solid gray;
+}
+
+.table_node{
+    border-radius : 5px;
+    border : 1px solid gray;
+    background : lightgray;
+    /*position: absolute;*/
+    display : inline-block;
+    width : 80px;
+    height : 160px;
+    margin-left : 3%;
+    margin-top : 30px;
+}
+
+.push_info{
+    color : red;
+    font-weight: bold;
+}
+
+.dv_audio{
+    display : none;
+}
+
+/*footer 부분*/
 
 /*footer 부분*/

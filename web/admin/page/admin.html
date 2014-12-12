@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <title> WRS ADMIN </title>
 
-<<<<<<< HEAD
     <script src="../../common/js/jquery-2.1.1.min.js"></script>
+    <script src="../../common/js/jquery-ui.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../../common/js/util.js"></script>
 
     <link rel="stylesheet" href="../../common/css/normalize.css"/>
-    <link rel="stylesheet" href="../css/admin.css"/>
-
-    <script src="../js/admin.js"></script>
-=======
-    <link rel="stylesheet" href="/web/common/css/normalize.css"/>
+    <link rel="stylesheet" href="../../common/css/jquery-ui.min.css"/>
     <link rel="stylesheet" href="../css/admin.css"/>
     
     <script src="../../common/js/common-1.js"></script>
 	<script src="../js/admin.js"></script>
->>>>>>> 97491ad0e3451b9325f6cf3d53071c10f28b84bd
 
 </head>
 <body>
@@ -29,13 +24,13 @@
         <div id="header">
 
             <div class="logo">
-               <!-- <img src="http://placehold.it/200x100" alt="dummy"/>-->
                 <img src="../img/logo_200x100.png">
             </div>
 
             <div class="status">
 
                 <div class="time" id="timer">
+
                 </div>
 
                 <div class="waiting">
@@ -50,11 +45,6 @@
                 <div class="msg"> 관리자님 환영합니다 </div>
 
                 <div class="menu">
-
-                    <div class="btn_logout">
-                        로그아웃
-                    </div>
-
                 </div>
 
             </div>
@@ -66,7 +56,6 @@
             <div class="snb">
 
                 <div class="menu" id="menu_reserve"> 예약 </div>
-                <div class="menu" id="menu_table"> 테이블 </div>
                 <div class="menu" id="menu_menu"> 메뉴 </div>
 
             </div>
@@ -86,35 +75,38 @@
                             <th> 예약 좌석 </th>
                             <th> 예약 취소 </th>
                         </tr>
-                        <!--<tr>
-                            <td> 01 </td>
-                            <td> 141116 20:36 </td>
-                            <td> 강지현 </td>
-                            <td> 010 - 0000 - 0000 </td>
-                            <td> 메뉴 </td>
-                            <td> 좌석 </td>
-                            <td> 취소 </td>
-                        </tr>-->
-
                     </table>
-					<table class="add_custom">
-						<tr><td>예약 추가</td></tr>
+
+                    <table class="add_custom">
+						<tr>
+						<td class="reserve_data">
+						<form class="reserve_form">
+						예약 정보:
+						<input type="text" class="reservation_name" value="name">
+						<input type="text" class="reservation_phone" value="phone number">
+						<span id="select_menu_set"><select class="select_menu"><option val="menu_default">menu</option></select>
+						<select class="select_menu_count">
+						<option val="1">1인분</option>
+						<option val="2">2인분</option>
+						<option val="3">3인분</option>
+						<option val="4">4인분</option>
+						</select></span>
+						<select class="select_table"><option val="table_default">Table</option></select>
+						</form>
+						</td>
+						<td class="add_reservation">예약 추가</td></tr>
 					</table>
 
                 </div>
 
-                <div class="menu tab_menu">
-					<table class="tab_menu_table">
-						<tr>
+                <div class="menu tab_menu" id="menu_tabmn">
+					<table class="menu_info_table">
+						<tr class="header">
+							<th>번호</th>
 							<th>메뉴</th>
 							<th>가격</th>
-							<th>사진</th>
 						</tr>
 					</table>
-                </div>
-
-                <div class="table tab_menu">
-
                 </div>
 
             </div>
